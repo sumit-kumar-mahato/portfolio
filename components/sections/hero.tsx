@@ -1,132 +1,139 @@
 "use client"
 
-import { motion, useScroll, useTransform } from "framer-motion"
-import { useRef } from "react"
-import dynamic from "next/dynamic"
-
-const HeroSphere = dynamic(() => import("@/components/3d/hero-sphere"), {
-  ssr: false,
-  loading: () => <div className="absolute inset-0 bg-background" />,
-})
+import { motion, useScroll, useTransform, useSpring } from "framer-motion"
+import { useRef, useEffect, useState } from "react"
+import Image from "next/image"
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null)
+  
+  // Scroll parallax
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   })
 
-  const sphereY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"])
-  const textLeftX = useTransform(scrollYProgress, [0, 0.5], ["0%", "-20%"])
-  const textRightX = useTransform(scrollYProgress, [0, 0.5], ["0%", "20%"])
+  // Advanced Mouse Tracking for the Avatar
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      // Normalize mouse coordinates to -1 to 1 range based on window size
+      const x = (e.clientX / window.innerWidth) * 2 - 1
+      const y = (e.clientY / window.innerHeight) * 2 - 1
+      setMousePosition({ x, y })
+    }
+    window.addEventListener("mousemove", handleMouseMove)
+    return () => window.removeEventListener("mousemove", handleMouseMove)
+  }, [])
+
+  // Smooth out the mouse values
+  const springX = useSpring(mousePosition.x, { stiffness: 50, damping: 20 })
+  const springY = useSpring(mousePosition.y, { stiffness: 50, damping: 20 })
+
+  // Transform mouse values to subtle rotations and translations
+  const avatarRotateX = useTransform(springY, [-1, 1], [15, -15]) // Tilt up/down
+  const avatarRotateY = useTransform(springX, [-1, 1], [-15, 15]) // Tilt left/right
+  const avatarX = useTransform(springX, [-1, 1], [-20, 20])
+  const avatarY = useTransform(springY, [-1, 1], [-20, 20])
+
+  // Scroll animations for background text
+  const bgTextY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"])
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
 
   return (
     <section
       ref={containerRef}
-      className="relative h-[200vh]"
+      className="relative h-[150vh]"
       id="home"
     >
-      <div className="sticky top-0 h-screen overflow-hidden bg-background">
-        {/* 3D Sphere */}
-        <motion.div style={{ y: sphereY }} className="absolute inset-0">
-          <HeroSphere />
+      <div className="sticky top-0 h-screen overflow-hidden bg-[#050505] flex flex-col justify-center perspective-[1000px]">
+        
+        {/* Top Navbar (Visual match to video) */}
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="absolute top-8 left-0 right-0 z-50 flex justify-center gap-12 text-[10px] md:text-xs font-bold tracking-widest text-white/70 uppercase"
+        >
+          <a href="#about" className="hover:text-white transition-colors cursor-pointer">About</a>
+          <a href="#experience" className="hover:text-white transition-colors cursor-pointer">Experience</a>
+          <a href="#projects" className="hover:text-white transition-colors cursor-pointer">Projects</a>
+          <a href="#contact" className="hover:text-white transition-colors cursor-pointer">Contact</a>
         </motion.div>
 
-        {/* Split Text - DEVELOPER */}
+        {/* Massive Background Text */}
         <motion.div
-          style={{ opacity }}
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          style={{ y: bgTextY, opacity }}
+          className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
         >
-          {/* Left side text */}
-          <motion.div
-            style={{ x: textLeftX }}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-[10%] md:translate-x-0"
-          >
-            <h1 className="text-[12vw] md:text-[9vw] font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/50 leading-none select-none">
-              DATA
-            </h1>
-          </motion.div>
-
-          {/* Right side text */}
-          <motion.div
-            style={{ x: textRightX }}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-[10%] md:translate-x-0"
-          >
-            <h1 className="text-[12vw] md:text-[9vw] font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-l from-foreground to-foreground/50 leading-none select-none">
-              SCIENTIST
-            </h1>
-          </motion.div>
+          <h1 className="text-[15vw] font-black tracking-tighter text-white leading-none select-none text-center whitespace-nowrap">
+            HI, I'M SUMIT
+          </h1>
         </motion.div>
 
-        {/* Center Content */}
+        {/* 2.5D Animated Character Avatar */}
+        <motion.div
+          style={{ 
+            opacity,
+            rotateX: avatarRotateX,
+            rotateY: avatarRotateY,
+            x: avatarX,
+            y: avatarY,
+          }}
+          className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none"
+        >
+          <div className="relative w-[50vw] max-w-[500px] aspect-square drop-shadow-2xl mix-blend-lighten">
+            <Image
+              src="/avatar_head.png"
+              alt="3D Avatar"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
+        </motion.div>
+
+        {/* Side Elements (Left Text, Right Button) */}
         <motion.div
           style={{ opacity }}
-          className="absolute inset-0 flex flex-col items-center justify-center z-10 px-6"
+          className="absolute inset-0 flex flex-col md:flex-row items-center justify-between z-30 px-8 md:px-16 pointer-events-none"
         >
+          {/* Left Text Block */}
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className="text-center mt-[30vh]"
+            className="w-full md:w-1/4 mt-auto mb-20 md:my-auto pointer-events-auto"
           >
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-              className="text-sm md:text-base tracking-[0.3em] text-cyan-400 uppercase mb-4"
-            >
-              AI & Big Data Analytics
-            </motion.p>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2 }}
-              className="text-3xl md:text-5xl font-light text-foreground mb-2"
-            >
-              Sumit Kumar Mahato
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.4 }}
-              className="text-muted-foreground text-sm md:text-base max-w-md mx-auto"
-            >
-              Leveraging data to drive organizational success and create positive impact
-            </motion.p>
+            <p className="text-white text-sm md:text-base font-medium leading-relaxed tracking-wide uppercase">
+              A DATA SCIENTIST PASSIONATE ABOUT CRAFTING BOLD AND MEMORABLE PROJECTS 😎
+            </p>
           </motion.div>
-        </motion.div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2 }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
-        >
-          <span className="text-xs tracking-[0.3em] text-muted-foreground uppercase">Scroll</span>
+          {/* Right Glowing Contact Button */}
           <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-            className="w-5 h-8 border border-muted-foreground/30 rounded-full flex justify-center pt-2"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.7 }}
+            className="w-full md:w-1/4 flex md:justify-end mb-20 md:my-auto pointer-events-auto"
           >
-            <motion.div className="w-1 h-1 bg-cyan-400 rounded-full" />
+            <a 
+              href="#contact"
+              className="relative inline-flex items-center justify-center px-8 py-4 rounded-full overflow-hidden group hover:scale-105 transition-transform duration-300"
+            >
+              {/* Animated Gradient Background */}
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 rounded-full" />
+              {/* Blur Glow */}
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 rounded-full blur-md opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
+              {/* Inner Dark Pill (Optional, for the outline effect if desired, but video uses full fill) */}
+              <div className="absolute inset-[2px] bg-black/40 rounded-full backdrop-blur-sm" />
+              
+              <span className="relative z-10 text-white font-bold tracking-widest text-sm uppercase">
+                Contact Me
+              </span>
+            </a>
           </motion.div>
         </motion.div>
-
-        {/* Corner decorations */}
-        <div className="absolute top-8 left-8 text-xs font-mono text-muted-foreground">
-          <span className="text-cyan-400">//</span> Portfolio 2025
-        </div>
-        <div className="absolute top-8 right-8 text-xs font-mono text-muted-foreground">
-          Ahmedabad, India
-        </div>
-        <div className="absolute bottom-8 left-8 text-xs font-mono text-muted-foreground hidden md:block">
-          <span className="text-cyan-400">01</span> / 04
-        </div>
-        <div className="absolute bottom-8 right-8 text-xs font-mono text-muted-foreground hidden md:block">
-          PGDM Big Data Analytics
-        </div>
       </div>
     </section>
   )
