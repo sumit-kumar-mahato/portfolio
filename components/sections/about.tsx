@@ -19,7 +19,7 @@ export default function About() {
   const y4 = useTransform(scrollYProgress, [0, 1], [-200, 100])
 
   return (
-    <section id="about" className="py-40 px-6 relative overflow-hidden bg-[#050505] min-h-[120vh] flex flex-col justify-center items-center" ref={containerRef}>
+    <section id="about" className="py-40 px-6 relative overflow-hidden bg-black min-h-[120vh] flex flex-col justify-center items-center" ref={containerRef}>
       {/* Floating 3D Elements */}
       <motion.div style={{ y: y1 }} className="absolute top-[10%] left-[5%] md:left-[10%] w-24 md:w-48 aspect-square opacity-90 mix-blend-screen pointer-events-none z-10">
         <Image src="/3d_splat.png" alt="Splat" fill className="object-contain" />

@@ -39,13 +39,45 @@ export default function Hero() {
   const bgTextY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"])
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
 
+  // Expression State Management (Blinking and Smiling on scroll)
+  const [currentFace, setCurrentFace] = useState("/avatar_head.png")
+
+  useEffect(() => {
+    // Blinking logic
+    const blinkInterval = setInterval(() => {
+      // 15% chance to blink every 2 seconds
+      if (Math.random() > 0.85) {
+        setCurrentFace("/avatar_head_blink.png")
+        setTimeout(() => {
+          // Return to normal or smile depending on scroll
+          setCurrentFace(window.scrollY > 300 ? "/avatar_head_smile.png" : "/avatar_head.png")
+        }, 150) // blink duration is 150ms
+      }
+    }, 2000)
+
+    // Smiling logic on scroll
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setCurrentFace((prev) => prev === "/avatar_head_blink.png" ? prev : "/avatar_head_smile.png")
+      } else {
+        setCurrentFace((prev) => prev === "/avatar_head_blink.png" ? prev : "/avatar_head.png")
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => {
+      clearInterval(blinkInterval)
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
+
   return (
     <section
       ref={containerRef}
       className="relative h-[200vh]"
       id="home"
     >
-      <div className="sticky top-0 h-screen overflow-hidden bg-[#050505] flex flex-col justify-center perspective-[1200px]">
+      <div className="sticky top-0 h-screen overflow-hidden bg-black flex flex-col justify-center perspective-[1200px]">
 
         {/* Massive Background Text */}
         <motion.div
@@ -80,14 +112,14 @@ export default function Hero() {
             {/* Glowing Depth Aura */}
             <div className="absolute inset-20 bg-blue-500/10 blur-[100px] rounded-full mix-blend-screen" />
             
-            {/* The Avatar Image with Seamless Masking */}
+            {/* The Avatar Image with Expression Swapping */}
             <Image
-              src="/avatar_head.png"
+              src={currentFace}
               alt="3D Avatar"
               fill
               className="object-contain pointer-events-auto mix-blend-screen"
               style={{
-                // Advanced CSS Mask to completely eliminate the dark grey square edges!
+                // Advanced CSS Mask to completely eliminate any remaining edges
                 WebkitMaskImage: "radial-gradient(circle at center, black 45%, transparent 68%)",
                 maskImage: "radial-gradient(circle at center, black 45%, transparent 68%)"
               }}
