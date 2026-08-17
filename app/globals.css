@@ -92,48 +92,50 @@
   }
 }
 
-/* Custom scrollbar */
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
-
 ::-webkit-scrollbar-track {
   background: var(--background);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: var(--primary);
+  background: linear-gradient(to bottom, oklch(0.75 0.15 195), oklch(0.65 0.15 285));
   border-radius: 4px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent);
 }
 
-/* Selection */
+/* ============================================
+   SELECTION
+   ============================================ */
 ::selection {
   background: oklch(0.7 0.15 180 / 0.3);
   color: var(--foreground);
 }
 
-/* Glow effect for 3D elements */
+/* ============================================
+   GLOW / PULSE EFFECTS
+   ============================================ */
 @keyframes pulse-glow {
-  0%, 100% {
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 1;
-  }
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
-/* Text gradient animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+/* ============================================
+   GRADIENT TEXT ANIMATION
+   ============================================ */
 @keyframes gradient-shift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 .animate-gradient {
@@ -141,29 +143,146 @@
   animation: gradient-shift 3s ease infinite;
 }
 
-/* Smooth scroll snap for sections */
-.scroll-snap-y {
-  scroll-snap-type: y mandatory;
+/* ============================================
+   AURORA BACKGROUND ANIMATION
+   ============================================ */
+@keyframes aurora {
+  0% { transform: translateX(-50%) translateY(-50%) rotate(0deg) scale(1); }
+  33% { transform: translateX(-30%) translateY(-60%) rotate(120deg) scale(1.2); }
+  66% { transform: translateX(-60%) translateY(-40%) rotate(240deg) scale(0.9); }
+  100% { transform: translateX(-50%) translateY(-50%) rotate(360deg) scale(1); }
 }
 
-.scroll-snap-section {
-  scroll-snap-align: start;
+.aurora-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-/* Marquee animation */
+.aurora-blob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: aurora 20s linear infinite;
+  mix-blend-mode: screen;
+}
+
+/* ============================================
+   MARQUEE ANIMATION
+   ============================================ */
 @keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .animate-marquee {
   animation: marquee 30s linear infinite;
 }
-
 .animate-marquee:hover {
   animation-play-state: paused;
+}
+
+/* ============================================
+   SCAN LINE EFFECT (optional premium look)
+   ============================================ */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+/* ============================================
+   SMOOTH SCROLL SNAP
+   ============================================ */
+.scroll-snap-y {
+  scroll-snap-type: y mandatory;
+}
+.scroll-snap-section {
+  scroll-snap-align: start;
+}
+
+/* ============================================
+   ADMIN PANEL SPECIFIC STYLES
+   ============================================ */
+.admin-root {
+  font-family: var(--font-sans, system-ui);
+  color-scheme: dark;
+}
+
+.admin-root input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+  cursor: pointer;
+}
+
+.admin-root input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgb(34, 211, 238);
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.admin-root input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+}
+
+.admin-root select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.3)' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px !important;
+}
+
+/* Glassmorphism card hover glow */
+.glass-glow:hover {
+  box-shadow: 0 0 40px rgba(34, 211, 238, 0.08);
+}
+
+/* Animated border gradient */
+@keyframes border-rotate {
+  from { --angle: 0deg; }
+  to { --angle: 360deg; }
+}
+
+/* Skill bar shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.skill-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Floating animation */
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Text gradient */
+.text-gradient-cyan {
+  background: linear-gradient(135deg, #22d3ee, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
