@@ -11,7 +11,6 @@ import {
   useVelocity,
 } from "framer-motion"
 
-import { usePortfolio } from "@/components/portfolio-provider"
 
 const wrap = (min: number, max: number, v: number) => {
   const range = max - min
@@ -55,10 +54,7 @@ function Row({ children, baseVelocity }: { children: React.ReactNode; baseVeloci
 }
 
 export default function VelocityMarquee() {
-  const { skills } = usePortfolio()
-  const words = skills.length
-    ? skills.slice(0, 6).map((s) => s.name)
-    : ["Machine Learning", "Deep Learning", "Computer Vision", "NLP", "Big Data", "Analytics"]
+  const words = ["Generative AI", "Agentic AI", "RAG", "Machine Learning", "Deep Learning", "Computer Vision"]
 
   const line = (outline: boolean) =>
     words.map((w) => (

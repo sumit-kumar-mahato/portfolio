@@ -23,28 +23,23 @@ function CategoryRow({ index, category, skills }: { index: number; category: str
 
       <div className="flex items-baseline gap-5 lg:col-span-5">
         <span className="font-mono text-xs text-fg-4">0{index + 1}</span>
-        <h3 className="font-display text-4xl font-semibold tracking-[-0.04em] text-fg transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-3 group-hover:text-signal sm:text-6xl">
+        <h3 className="font-display text-4xl font-semibold leading-[0.95] tracking-[-0.04em] text-fg transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-3 group-hover:text-signal sm:text-5xl">
           {category}
         </h3>
       </div>
 
-      <ul className="grid gap-x-10 gap-y-5 sm:grid-cols-2 lg:col-span-7">
+      <ul className="flex flex-wrap content-start gap-2.5 lg:col-span-7">
         {skills.map((s, i) => (
-          <li key={s.id} className="space-y-2.5">
-            <div className="flex items-baseline justify-between gap-4">
-              <span className="text-base font-medium text-fg-2 sm:text-lg">{s.name}</span>
-              <span className="font-mono text-xs tabular-nums text-fg-4">{s.level}%</span>
-            </div>
-            <div className="h-[3px] overflow-hidden rounded-full bg-line">
-              <motion.div
-                className="h-full origin-left rounded-full bg-gradient-to-r from-fg-3 to-signal"
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: s.level / 100 }}
-                viewport={{ once: true, amount: 0.8 }}
-                transition={{ duration: 1.6, ease: EASE, delay: 0.15 + i * 0.08 }}
-              />
-            </div>
-          </li>
+          <motion.li
+            key={s.id}
+            initial={{ opacity: 0, y: 14, scale: 0.94 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 0.6, ease: EASE, delay: 0.1 + i * 0.04 }}
+            className="rounded-full border border-line bg-card px-4 py-2 text-[15px] font-medium text-fg-2 transition-colors duration-300 hover:border-signal/60 hover:bg-signal hover:text-bg sm:px-5 sm:py-2.5 sm:text-base"
+          >
+            {s.name}
+          </motion.li>
         ))}
       </ul>
     </motion.div>
@@ -89,7 +84,7 @@ export default function Skills() {
           label="Capabilities"
           title="Tools of"
           accent="the trade."
-          aside="From statistics to production pipelines — the stack I reach for when the data gets serious."
+          aside="From agent graphs and retrieval pipelines to the models and APIs underneath — the stack I build with."
         />
 
         {groups.length > 0 && (

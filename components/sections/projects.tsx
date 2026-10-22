@@ -14,13 +14,21 @@ const EASE = [0.16, 1, 0.3, 1] as const
 const hasLink = (url?: string) => !!url && url !== "#"
 
 function ProjectCard({ project, index, total }: { project: Project; index: number; total: number }) {
+  const { contact } = usePortfolio()
   const { tint } = artFor(project.category)
-  const link = hasLink(project.live) ? project.live : hasLink(project.github) ? project.github : null
+  // Every card goes somewhere: the live demo, else the repo, else the GitHub profile.
+  const link = hasLink(project.live)
+    ? project.live
+    : hasLink(project.github)
+      ? project.github
+      : hasLink(contact.github)
+        ? contact.github
+        : null
   const Tag = link ? "a" : "div"
 
   return (
     <Tag
-      {...(link ? { href: link, target: "_blank", rel: "noopener noreferrer", "data-cursor": "Open" } : {})}
+      {...(link ? { href: link, target: "_blank", rel: "noopener noreferrer", "data-cursor": hasLink(project.live) ? "Live" : "GitHub" } : {})}
       className="group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-line bg-card transition-colors duration-500 hover:border-line-strong"
     >
       {/* Artwork */}
@@ -56,7 +64,7 @@ function ProjectCard({ project, index, total }: { project: Project; index: numbe
             <ArrowUpRight className="h-4 w-4" />
           </span>
         </div>
-        <p className="line-clamp-3 text-sm leading-relaxed text-fg-3">{project.description}</p>
+        <p className="line-clamp-3 min-h-[4.875em] text-sm leading-relaxed text-fg-3">{project.description}</p>
         <div className="flex flex-wrap gap-1.5">
           {project.tech.map((t) => (
             <span key={t} className="rounded-full border border-line px-3 py-1 font-mono text-[10.5px] text-fg-2">
@@ -87,8 +95,8 @@ function Intro({ count }: { count: number }) {
       </div>
       <div className="max-w-sm space-y-6">
         <p className="text-base leading-relaxed text-fg-3">
-          Machine learning models, computer vision systems, NLP tools and BI dashboards — each one built
-          around a real question.
+          Agentic AI, RAG assistants, machine learning models, computer vision and BI dashboards. Click any
+          card to open its code on GitHub.
         </p>
         <p className="hidden items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-fg-4 lg:flex">
           <span className="h-px w-10 bg-fg-4" /> Keep scrolling

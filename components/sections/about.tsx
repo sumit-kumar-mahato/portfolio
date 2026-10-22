@@ -148,15 +148,14 @@ function Line({ children }: { children: React.ReactNode }) {
 }
 
 export default function About() {
-  const { about, projects, experience } = usePortfolio()
+  const { about, projects } = usePortfolio()
   const [lead, ...restParas] = about.bio.split("\n\n").filter(Boolean)
-  const workCount = experience.filter((e) => e.type === "work").length
 
   const stats = [
     { value: `${projects.length || 10}+`, label: "Data & AI projects shipped" },
-    { value: "3.83", label: "PGDM CGPA — out of 4.33" },
+    { value: "3.85", label: "PGDM CGPA — out of 4.33" },
     { value: "2GW", label: "Solar plant build, Adani Solar" },
-    { value: `${workCount || 3}`, label: "Industry roles & internships" },
+    { value: "2+", label: "Years of industry experience" },
   ]
 
   return (
@@ -180,7 +179,7 @@ export default function About() {
                 <span className="spin-slow absolute inset-0 rounded-full border border-dashed border-bg/30" />
               </div>
               <p className="max-w-[14rem] text-sm leading-relaxed text-fg-3">
-                Engineer turned data scientist. Ex-Adani Solar, now building models that earn their keep.
+                Civil engineer turned AI engineer. Ex-Adani Solar and Healthark Insights, now building agentic AI systems.
               </p>
             </div>
           </Reveal>

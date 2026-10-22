@@ -13,6 +13,8 @@ const MAP: Record<string, { variant: Variant; tint: string }> = {
   "Data Analytics": { variant: "bars", tint: "var(--color-tint-amber)" },
   "NLP & AI": { variant: "text", tint: "var(--color-tint-violet)" },
   GenAI: { variant: "network", tint: "var(--color-tint-rose)" },
+  "Generative AI": { variant: "text", tint: "var(--color-tint-rose)" },
+  "Agentic AI": { variant: "network", tint: "var(--color-tint-lime)" },
   "Deep Learning": { variant: "network", tint: "var(--color-tint-mint)" },
   "Full Stack": { variant: "stack", tint: "var(--color-tint-gold)" },
 }

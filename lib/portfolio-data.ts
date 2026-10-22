@@ -79,12 +79,12 @@ const DEVICON = "https://cdn.jsdelivr.net/gh/devicons/devicon/icons"
 export const defaultPortfolio: PortfolioData = {
   hero: {
     name: "Sumit Kumar Mahato",
-    tagline: "AI & Data Science Specialist",
-    headline: "Turning messy data into decisions worth making.",
+    tagline: "AI & Data Science",
+    headline: "Building production-grade AI, from agents to insights.",
     description:
       "Data Science & AI professional working across machine learning, deep learning, big data analytics and business intelligence.",
     recruitersLine:
-      "PGDM in Big Data Analytics at 3.83/4.33, two years as Assistant Manager at Adani Solar, ten shipped data projects. Available now.",
+      "PGDM in AI & Data Science (CGPA 3.85/4.33), 2 years as Assistant Manager at Adani Solar, and an AI consulting internship at Healthark Insights.",
     foundersLine:
       "I turn the data you already collect into the two or three decisions that move the business — then build the dashboard that keeps it honest.",
     engineersLine:

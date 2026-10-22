@@ -13,7 +13,7 @@ import { SplitChars, SplitWords } from "@/components/ui/split-text"
 const DataField = dynamic(() => import("@/components/three/data-field"), { ssr: false })
 
 const EASE = [0.16, 1, 0.3, 1] as const
-const ROLES = ["Machine Learning", "Computer Vision", "NLP & GenAI", "Business Intelligence", "Big Data"]
+const ROLES = ["Generative AI", "Agentic AI", "RAG Systems", "Machine Learning", "Computer Vision"]
 
 function RoleTicker({ play }: { play: boolean }) {
   const [i, setI] = useState(0)

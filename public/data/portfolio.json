@@ -2,293 +2,439 @@
   "hero": {
     "name": "Sumit Kumar Mahato",
     "tagline": "AI & Data Science",
-    "description": "Data Science & AI professional working across machine learning, deep learning, big data analytics and business intelligence.",
-    "resumeUrl": "#",
+    "headline": "Building production-grade AI, from agents to insights.",
+    "description": "AI & Data Science professional with 2+ years of industry experience, specialising in Generative AI, machine learning and scalable AI application development.",
+    "recruitersLine": "PGDM in AI & Data Science (CGPA 3.85/4.33), 2 years as Assistant Manager at Adani Solar, and an AI consulting internship at Healthark Insights building an enterprise LLM platform.",
+    "foundersLine": "I build AI products that hold up in production: agentic workflows with LangGraph, RAG over your own data, and FastAPI backends with caching, containers and LLM monitoring built in.",
+    "engineersLine": "Python, LangChain, LangGraph, RAG, embeddings and vector search, FastAPI, PostgreSQL, Redis, Docker, LangSmith, plus classic ML/DL: CNNs, RNNs, Transformers and boosting.",
+    "resumeUrl": "/Sumit_Kumar_Mahato_Resume.pdf",
     "backgroundImage": ""
   },
   "about": {
-    "bio": "With a strong technical foundation in AI and Big Data Analytics, I specialize in building intelligent models, robust system architectures, and actionable business insights.\n\nI love collaborating with teams that want to innovate and push the boundaries of data science.\n\nLet's create something amazing together!"
+    "bio": "Civil engineer turned AI engineer. I build production-oriented AI systems, from multi-agent workflows and RAG assistants to the machine learning models and dashboards behind real decisions.\n\nAt Healthark Insights I helped build Curie, an enterprise AI platform on FastAPI, LangGraph and PostgreSQL, with Redis caching, Docker and LangSmith observability. Before that, two years at Adani Solar commissioning a 2 GW TOPCon manufacturing line taught me how real systems get shipped.\n\nI am currently pursuing a PGDM in AI & Data Science at Adani Institute of Digital Technology Management, and I am open to AI / ML engineering roles."
   },
   "skills": [
     {
       "id": 1,
-      "name": "Python",
-      "level": 90,
-      "category": "Programming"
+      "name": "LangChain",
+      "level": 88,
+      "category": "Agentic & Generative AI"
     },
     {
       "id": 2,
-      "name": "Machine Learning",
-      "level": 85,
-      "category": "AI/ML"
+      "name": "LangGraph",
+      "level": 88,
+      "category": "Agentic & Generative AI"
     },
     {
       "id": 3,
-      "name": "Deep Learning",
-      "level": 75,
-      "category": "AI/ML"
+      "name": "RAG",
+      "level": 90,
+      "category": "Agentic & Generative AI"
     },
     {
       "id": 4,
-      "name": "SQL",
+      "name": "LLM Orchestration",
       "level": 85,
-      "category": "Data"
+      "category": "Agentic & Generative AI"
     },
     {
       "id": 5,
-      "name": "Power BI",
-      "level": 80,
-      "category": "Analytics"
+      "name": "Prompt Engineering",
+      "level": 88,
+      "category": "Agentic & Generative AI"
     },
     {
       "id": 6,
-      "name": "Pandas / NumPy",
-      "level": 88,
-      "category": "Data"
+      "name": "Embeddings & Vector DBs",
+      "level": 85,
+      "category": "Agentic & Generative AI"
     },
     {
       "id": 7,
-      "name": "Computer Vision",
-      "level": 78,
-      "category": "AI/ML"
+      "name": "Semantic Search",
+      "level": 84,
+      "category": "Agentic & Generative AI"
     },
     {
       "id": 8,
-      "name": "NLP",
-      "level": 72,
-      "category": "AI/ML"
+      "name": "Multi-Agent Workflows",
+      "level": 85,
+      "category": "Agentic & Generative AI"
     },
     {
       "id": 9,
-      "name": "Data Visualization",
-      "level": 85,
-      "category": "Analytics"
+      "name": "Tool Calling",
+      "level": 82,
+      "category": "Agentic & Generative AI"
     },
     {
       "id": 10,
-      "name": "LangChain / GenAI",
-      "level": 70,
-      "category": "AI/ML"
+      "name": "Human-in-the-Loop",
+      "level": 80,
+      "category": "Agentic & Generative AI"
+    },
+    {
+      "id": 11,
+      "name": "LLM Observability",
+      "level": 80,
+      "category": "Agentic & Generative AI"
+    },
+    {
+      "id": 12,
+      "name": "ANNs",
+      "level": 82,
+      "category": "ML / DL & Statistics"
+    },
+    {
+      "id": 13,
+      "name": "CNNs",
+      "level": 82,
+      "category": "ML / DL & Statistics"
+    },
+    {
+      "id": 14,
+      "name": "RNNs & LSTM",
+      "level": 78,
+      "category": "ML / DL & Statistics"
+    },
+    {
+      "id": 15,
+      "name": "Transformers",
+      "level": 80,
+      "category": "ML / DL & Statistics"
+    },
+    {
+      "id": 16,
+      "name": "Bagging & Boosting",
+      "level": 85,
+      "category": "ML / DL & Statistics"
+    },
+    {
+      "id": 17,
+      "name": "EDA",
+      "level": 90,
+      "category": "ML / DL & Statistics"
+    },
+    {
+      "id": 18,
+      "name": "FastAPI",
+      "level": 86,
+      "category": "Backend & Tools"
+    },
+    {
+      "id": 19,
+      "name": "REST APIs",
+      "level": 85,
+      "category": "Backend & Tools"
+    },
+    {
+      "id": 20,
+      "name": "Docker",
+      "level": 80,
+      "category": "Backend & Tools"
+    },
+    {
+      "id": 21,
+      "name": "Redis",
+      "level": 76,
+      "category": "Backend & Tools"
+    },
+    {
+      "id": 22,
+      "name": "LangSmith",
+      "level": 80,
+      "category": "Backend & Tools"
+    },
+    {
+      "id": 23,
+      "name": "Git & GitHub",
+      "level": 85,
+      "category": "Backend & Tools"
+    },
+    {
+      "id": 24,
+      "name": "Postman",
+      "level": 80,
+      "category": "Backend & Tools"
+    },
+    {
+      "id": 25,
+      "name": "Python",
+      "level": 92,
+      "category": "Programming & Data"
+    },
+    {
+      "id": 26,
+      "name": "SQL",
+      "level": 86,
+      "category": "Programming & Data"
+    },
+    {
+      "id": 27,
+      "name": "PostgreSQL",
+      "level": 82,
+      "category": "Programming & Data"
+    },
+    {
+      "id": 28,
+      "name": "Power BI",
+      "level": 80,
+      "category": "Programming & Data"
     }
   ],
   "experience": [
     {
       "id": 1,
-      "type": "education",
-      "title": "PGDM in Big Data Analytics",
-      "company": "Adani Institute of Digital Technology Management",
-      "location": "Ahmedabad, India",
-      "period": "2025 - Present",
+      "type": "work",
+      "title": "Consulting Intern, AI & Data Science",
+      "company": "Healthark Insights",
+      "location": "India",
+      "period": "Apr 2026 - Aug 2026",
       "description": [
-        "Currently pursuing PGDM in Big Data Analytics with CGPA 3.83/4.33",
-        "Developing machine learning models for stroke prediction and obesity classification",
-        "Working on SQL-based analytics projects for business insights"
+        "Developed Curie, an enterprise-grade AI platform using FastAPI, LangGraph, PostgreSQL and multiple API integrations to orchestrate intelligent, context-aware workflows.",
+        "Built a scalable, observable AI backend with Redis caching, Docker containerisation and LangSmith for performance optimisation, streamlined deployment and end-to-end LLM monitoring.",
+        "Engineered an AI-powered XLIFF translation pipeline using OpenAI GPT-4o, XML parsing and OCR-based graphics translation to automate Adobe FrameMaker localisation while preserving document structure."
       ]
     },
     {
       "id": 2,
-      "type": "work",
-      "title": "Assistant Manager",
-      "company": "Adani Solar, Mundra",
-      "location": "Gujarat, India",
-      "period": "Aug 2022 - May 2024",
+      "type": "education",
+      "title": "PGDM in AI & Data Science",
+      "company": "Adani Institute of Digital Technology Management",
+      "location": "Ahmedabad, India",
+      "period": "2025 - Present",
       "description": [
-        "Construction phase of 2GW TOPCON Project - establishment of utility functions, machine movement, installation and process commissioning",
-        "Managed end-to-end procurement processes including purchase requisitions, purchase orders and vendor evaluation"
+        "CGPA 3.85 / 4.33.",
+        "Projects in agentic AI, retrieval-augmented generation and machine learning, including a multi-agent skill gap analyzer and a RAG medical chatbot."
       ]
     },
     {
       "id": 3,
       "type": "work",
-      "title": "Business Analytics Intern",
-      "company": "Apparatus Solutions, Pune",
-      "location": "Pune, India",
-      "period": "Sep 2022 - Dec 2022",
+      "title": "Assistant Manager",
+      "company": "Adani Solar",
+      "location": "Mundra, Gujarat",
+      "period": "Aug 2022 - May 2024",
       "description": [
-        "Performed data analysis and visualization using Python for data-driven decision-making",
-        "Supported marketing and design activities by creating visually appealing layouts in Canva"
+        "Worked on construction and commissioning of the 2 GW TOPCon manufacturing project: utility establishment, machine movement, installation and process commissioning.",
+        "Managed end-to-end procurement including purchase requisitions, purchase orders and vendor evaluation using SAP MM."
       ]
     },
     {
       "id": 4,
       "type": "work",
-      "title": "Civil Engineering Intern",
-      "company": "Patel Infrastructure, Patna",
-      "location": "Patna, India",
-      "period": "Nov 2020 - Apr 2021",
+      "title": "Intern, Business Analyst",
+      "company": "Apparatus Solutions",
+      "location": "Pune, India",
+      "period": "Sep 2022 - Dec 2022",
       "description": [
-        "Conducted surveys and investigations for project development",
-        "Prepared Detailed Project Reports (DPR) and drawings for road and bridge projects using AutoCAD"
+        "Performed data analysis and visualisation in Python to support data-driven decision-making.",
+        "Supported marketing and design activities by creating visual layouts in Canva."
       ]
     },
     {
       "id": 5,
+      "type": "work",
+      "title": "Intern, Project Engineer Trainee",
+      "company": "Patel Infrastructure",
+      "location": "Patna, India",
+      "period": "Nov 2020 - Apr 2021",
+      "description": [
+        "Conducted surveys and investigations for project development.",
+        "Helped prepare Detailed Project Reports (DPRs) and layouts for road and bridge projects using AutoCAD."
+      ]
+    },
+    {
+      "id": 6,
       "type": "education",
       "title": "B.Tech in Civil Engineering",
       "company": "Kalinga Institute of Industrial Technology",
       "location": "Bhubaneswar, India",
       "period": "2018 - 2022",
       "description": [
-        "Completed Bachelor of Technology in Civil Engineering with CGPA 8.49/10.00",
-        "Developed strong foundation in engineering principles and project management"
+        "CGPA 8.49 / 10.00.",
+        "Built a strong foundation in engineering principles and project management."
       ]
     }
   ],
   "projects": [
     {
       "id": 1,
-      "title": "Stroke Prediction Model",
-      "category": "Machine Learning",
-      "description": "Developed an advanced predictive model using Machine Learning techniques to accurately identify individuals at risk of experiencing a stroke based on various health indicators.",
+      "title": "Agentic AI Skill Gap Analyzer",
+      "category": "Agentic AI",
+      "description": "Multi-agent platform built on LangGraph state orchestration that parses resumes against job descriptions and surfaces skill gaps through embedding-based semantic similarity, with a human-in-the-loop review checkpoint.",
       "tech": [
-        "Python",
-        "XGBoost",
-        "Scikit-learn"
+        "LangGraph",
+        "Embeddings",
+        "Vector Search",
+        "FastAPI"
       ],
-      "gradient": "from-orange-100 to-amber-50",
-      "border": "border-orange-200",
-      "github": "https://github.com/sumit-kumar-mahato/Stroke-Prediction",
-      "live": "#",
-      "colSpan": "md:col-span-2 lg:col-span-2"
-    },
-    {
-      "id": 10,
-      "title": "Enterprise LLM Assistant",
-      "category": "GenAI",
-      "description": "A sophisticated Generative AI integration utilizing state-of-the-art Large Language Models (LLMs) to construct contextual conversational agents and intelligent RAG systems.",
-      "tech": [
-        "Python",
-        "LangChain",
-        "OpenAI"
-      ],
-      "gradient": "from-violet-100 to-indigo-50",
-      "border": "border-violet-200",
-      "github": "#",
+      "gradient": "",
+      "border": "",
+      "github": "https://github.com/sumit-kumar-mahato/skill-gap-analyzer",
       "live": "#",
       "colSpan": "col-span-1"
     },
     {
       "id": 2,
-      "title": "Computer Vision Ecosystem",
-      "category": "Computer Vision",
-      "description": "An end-to-end repository encompassing basic image processing, advanced deep learning models, and real-time video analytics for dynamic environments.",
+      "title": "RAG Medical Chatbot",
+      "category": "Generative AI",
+      "description": "End-to-end retrieval-augmented assistant combining dermatology image analysis, semantic retrieval and LLM reasoning, grounded in a scraped and embedded medical knowledge base to reduce hallucinations.",
       "tech": [
-        "Python",
-        "OpenCV",
-        "Deep Learning"
+        "RAG",
+        "LLMs",
+        "Embeddings",
+        "OpenCV"
       ],
-      "gradient": "from-rose-100 to-orange-50",
-      "border": "border-rose-200",
-      "github": "https://github.com/sumit-kumar-mahato/Computer-Vision",
+      "gradient": "",
+      "border": "",
+      "github": "https://github.com/sumit-kumar-mahato",
       "live": "#",
       "colSpan": "col-span-1"
     },
     {
       "id": 3,
-      "title": "Obesity Classification",
+      "title": "Stroke Prediction Model",
       "category": "Machine Learning",
-      "description": "Classification model to predict weight categories utilizing demographic, lifestyle, and comprehensive health-related factors.",
+      "description": "Full ML lifecycle on healthcare data (cleaning, EDA, feature engineering, class-imbalance handling), benchmarking Random Forest, KNN and Decision Trees to reach 94% accuracy, evaluated on recall.",
       "tech": [
         "Python",
-        "Pandas",
-        "Machine Learning"
+        "Scikit-learn",
+        "Random Forest",
+        "EDA"
       ],
-      "gradient": "from-emerald-100 to-teal-50",
-      "border": "border-emerald-200",
-      "github": "https://github.com/sumit-kumar-mahato/Obesity_classification",
-      "live": "#",
-      "colSpan": "col-span-1"
-    },
-    {
-      "id": 9,
-      "title": "AI Resume Analyzer",
-      "category": "NLP & AI",
-      "description": "A natural language processing utility engineered to evaluate resumes, align them against core job requirements, and systematically identify critical skill gaps.",
-      "tech": [
-        "Python",
-        "NLP",
-        "Spacy"
-      ],
-      "gradient": "from-sky-100 to-blue-50",
-      "border": "border-sky-200",
-      "github": "https://github.com/sumit-kumar-mahato/resume-analyzer",
-      "live": "#",
-      "colSpan": "md:col-span-2 lg:col-span-1"
-    },
-    {
-      "id": 8,
-      "title": "Bird Species Identifier",
-      "category": "Deep Learning",
-      "description": "An AI-powered image recognition tool leveraging Convolutional Neural Networks (CNN) to accurately classify and identify various species of birds from user uploads.",
-      "tech": [
-        "Python",
-        "CNN",
-        "Keras"
-      ],
-      "gradient": "from-amber-100 to-yellow-50",
-      "border": "border-amber-200",
-      "github": "https://github.com/sumit-kumar-mahato/Bird-Species-Identifier",
+      "gradient": "",
+      "border": "",
+      "github": "https://github.com/sumit-kumar-mahato/Stroke-Prediction",
       "live": "#",
       "colSpan": "col-span-1"
     },
     {
       "id": 4,
-      "title": "SHG Business OS",
-      "category": "Full Stack",
-      "description": "A robust organizational system encompassing an Admin OS and User OS to seamlessly manage Self Help Group businesses and resource allocation.",
+      "title": "AI Resume Analyzer",
+      "category": "NLP & AI",
+      "description": "LangChain and LangGraph pipeline on Groq that reads a resume and a job description, scores the match and explains which skills are missing.",
       "tech": [
-        "Python",
-        "Backend OS",
-        "System Architecture"
+        "LangChain",
+        "LangGraph",
+        "Groq",
+        "Streamlit"
       ],
-      "gradient": "from-fuchsia-100 to-pink-50",
-      "border": "border-fuchsia-200",
-      "github": "https://github.com/sumit-kumar-mahato/shg-os-app",
+      "gradient": "",
+      "border": "",
+      "github": "https://github.com/sumit-kumar-mahato/resume-analyzer",
       "live": "#",
-      "colSpan": "md:col-span-2 lg:col-span-2"
+      "colSpan": "col-span-1"
     },
     {
       "id": 5,
-      "title": "Blinkit Sales Dashboard",
-      "category": "Data Analytics",
-      "description": "Interactive data visualization and business intelligence dashboard analyzing Blinkit sales, inventory metrics, and localized operational trends.",
+      "title": "Smart Pothole Detection",
+      "category": "Computer Vision",
+      "description": "Real-time pothole detection from a phone camera using a YOLOv8 model, packaged with Docker for deployment.",
       "tech": [
-        "PowerBI",
-        "Data Analytics"
+        "Python",
+        "YOLOv8",
+        "OpenCV",
+        "Docker"
       ],
-      "gradient": "from-lime-100 to-emerald-50",
-      "border": "border-lime-200",
-      "github": "https://github.com/sumit-kumar-mahato/Blinkit_PowerBI",
+      "gradient": "",
+      "border": "",
+      "github": "https://github.com/sumit-kumar-mahato/pothole",
       "live": "#",
       "colSpan": "col-span-1"
     },
     {
       "id": 6,
-      "title": "Monday Coffee Analytics",
-      "category": "Data Analytics",
-      "description": "Analyzed extensive sales data for Monday Coffee to identify high-potential cities in India for rapid new store expansion based on latent consumer demand.",
+      "title": "Computer Vision Ecosystem",
+      "category": "Computer Vision",
+      "description": "End-to-end computer vision work, from basic image processing to advanced deep learning models and video analytics.",
       "tech": [
-        "SQL",
-        "Data Analysis"
+        "Python",
+        "OpenCV",
+        "Deep Learning"
       ],
-      "gradient": "from-indigo-100 to-sky-50",
-      "border": "border-indigo-200",
-      "github": "https://github.com/sumit-kumar-mahato/Monday-Coffee-Project",
+      "gradient": "",
+      "border": "",
+      "github": "https://github.com/sumit-kumar-mahato/Computer-Vision",
       "live": "#",
       "colSpan": "col-span-1"
     },
     {
       "id": 7,
-      "title": "Smart Pothole Detection",
-      "category": "Computer Vision",
-      "description": "An integrated Android application paired with a Machine Learning backend that utilizes mobile cameras to detect, map, and report road potholes in real-time.",
+      "title": "Bird Species Identifier",
+      "category": "Deep Learning",
+      "description": "Image recognition tool using convolutional neural networks to classify bird species from user uploads.",
       "tech": [
         "Python",
-        "Computer Vision"
+        "CNN",
+        "Keras"
       ],
-      "gradient": "from-stone-100 to-neutral-50",
-      "border": "border-stone-200",
-      "github": "https://github.com/sumit-kumar-mahato/pothole-detection",
+      "gradient": "",
+      "border": "",
+      "github": "https://github.com/sumit-kumar-mahato/Bird-Species-Identifier",
+      "live": "#",
+      "colSpan": "col-span-1"
+    },
+    {
+      "id": 8,
+      "title": "SHG Business OS",
+      "category": "Full Stack",
+      "description": "Admin OS and User OS to manage Self Help Group businesses, credibility and resource allocation.",
+      "tech": [
+        "Python",
+        "Streamlit",
+        "System Design"
+      ],
+      "gradient": "",
+      "border": "",
+      "github": "https://github.com/sumit-kumar-mahato/shg-os-app",
+      "live": "#",
+      "colSpan": "col-span-1"
+    },
+    {
+      "id": 9,
+      "title": "Obesity Classification",
+      "category": "Machine Learning",
+      "description": "Classification model predicting weight categories from demographic, lifestyle and health-related factors.",
+      "tech": [
+        "Python",
+        "Pandas",
+        "Scikit-learn"
+      ],
+      "gradient": "",
+      "border": "",
+      "github": "https://github.com/sumit-kumar-mahato/Obesity_classification",
+      "live": "#",
+      "colSpan": "col-span-1"
+    },
+    {
+      "id": 10,
+      "title": "Blinkit Sales Dashboard",
+      "category": "Data Analytics",
+      "description": "Interactive Power BI dashboard analysing Blinkit sales, inventory metrics and outlet-level trends.",
+      "tech": [
+        "Power BI",
+        "Data Analytics"
+      ],
+      "gradient": "",
+      "border": "",
+      "github": "https://github.com/sumit-kumar-mahato/Blinkit_PowerBI",
+      "live": "#",
+      "colSpan": "col-span-1"
+    },
+    {
+      "id": 11,
+      "title": "Monday Coffee Analytics",
+      "category": "Data Analytics",
+      "description": "SQL analysis of Monday Coffee sales data to find the highest-potential Indian cities for new store expansion.",
+      "tech": [
+        "SQL",
+        "Data Analysis"
+      ],
+      "gradient": "",
+      "border": "",
+      "github": "https://github.com/sumit-kumar-mahato/Monday-Coffee-Project",
       "live": "#",
       "colSpan": "col-span-1"
     }
@@ -335,55 +481,75 @@
     },
     {
       "id": 2,
+      "name": "FastAPI",
+      "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg"
+    },
+    {
+      "id": 3,
+      "name": "PostgreSQL",
+      "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg"
+    },
+    {
+      "id": 4,
+      "name": "Docker",
+      "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg"
+    },
+    {
+      "id": 5,
+      "name": "Redis",
+      "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg"
+    },
+    {
+      "id": 6,
+      "name": "Git",
+      "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg"
+    },
+    {
+      "id": 7,
+      "name": "GitHub",
+      "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
+    },
+    {
+      "id": 8,
       "name": "Pandas",
       "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg"
     },
     {
-      "id": 3,
+      "id": 9,
       "name": "NumPy",
       "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg"
     },
     {
-      "id": 4,
+      "id": 10,
       "name": "Matplotlib",
       "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matplotlib/matplotlib-original.svg"
     },
     {
-      "id": 5,
-      "name": "SQL",
-      "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azuresqldatabase/azuresqldatabase-original.svg"
-    },
-    {
-      "id": 6,
+      "id": 11,
       "name": "Power BI",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/c/cf/New_Power_BI_Logo.svg"
     },
     {
-      "id": 7,
+      "id": 12,
       "name": "Tableau",
       "logo": "https://cdn.worldvectorlogo.com/logos/tableau-software.svg"
     },
     {
-      "id": 8,
+      "id": 13,
       "name": "Excel",
       "logo": "/excel.svg"
     },
     {
-      "id": 9,
-      "name": "PowerPoint",
-      "logo": "/powerpoint.svg"
-    },
-    {
-      "id": 10,
+      "id": 14,
       "name": "SAP",
       "logo": "https://cdn.worldvectorlogo.com/logos/sap-2.svg"
     }
   ],
   "contact": {
     "email": "sumitmahato.aids25@aidtm.ac.in",
-    "phone": "+91 875782221",
+    "phone": "+91 8757822221",
     "location": "Ahmedabad, India",
-    "github": "https://github.com/sumitkumarmahato",
+    "github": "https://github.com/sumit-kumar-mahato",
     "linkedin": "https://linkedin.com/in/sumitkumarmahato",
     "tagline": "Have a project in mind? I'd love to hear about it. Drop me a message and let's create something amazing."
   }

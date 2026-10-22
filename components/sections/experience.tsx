@@ -133,7 +133,7 @@ export default function Experience() {
             label="Experience"
             title="Where I've"
             accent="been."
-            aside="Civil engineering on a 2GW construction site, then a deliberate pivot into data. The two halves inform each other more than you'd expect."
+            aside="Civil engineering on a 2GW construction site, then a deliberate pivot into AI. The two halves inform each other more than you'd expect."
           />
 
           <div className="flex flex-wrap gap-1 rounded-full border border-bg/15 p-1 sm:w-fit">
