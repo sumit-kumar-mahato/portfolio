@@ -1,217 +1,263 @@
 @import 'tailwindcss';
-@import 'tw-animate-css';
 
-@custom-variant dark (&:is(.dark *));
+/* ============================================================
+   DESIGN SYSTEM — "Signal"
+   Near-black ground, warm bone text, one electric lime accent.
+   The accent is the only saturated colour on the page, so it is
+   reserved for things that matter: CTAs, live indicators, data.
+   ============================================================ */
+@theme {
+  --color-bg: #0a0a0b;
+  --color-bg-2: #111113;
+  --color-card: #151517;
+  --color-card-2: #1b1b1e;
+  --color-line: #242427;
+  --color-line-strong: #34343a;
 
-:root {
-  --background: oklch(0.08 0.02 270);
-  --foreground: oklch(0.95 0 0);
-  --card: oklch(0.12 0.02 270);
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.12 0.02 270);
-  --popover-foreground: oklch(0.95 0 0);
-  --primary: oklch(0.75 0.15 195);
-  --primary-foreground: oklch(0.08 0.02 270);
-  --secondary: oklch(0.15 0.02 270);
-  --secondary-foreground: oklch(0.85 0 0);
-  --muted: oklch(0.18 0.015 270);
-  --muted-foreground: oklch(0.55 0.02 270);
-  --accent: oklch(0.75 0.15 195);
-  --accent-foreground: oklch(0.08 0.02 270);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.95 0 0);
-  --border: oklch(0.2 0.02 270);
-  --input: oklch(0.15 0.02 270);
-  --ring: oklch(0.75 0.15 195);
-  --chart-1: oklch(0.75 0.15 195);
-  --chart-2: oklch(0.65 0.12 200);
-  --chart-3: oklch(0.55 0.1 210);
-  --chart-4: oklch(0.7 0.13 198);
-  --chart-5: oklch(0.6 0.11 205);
-  --radius: 0.75rem;
-  --sidebar: oklch(0.1 0.02 270);
-  --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.75 0.15 195);
-  --sidebar-primary-foreground: oklch(0.08 0.02 270);
-  --sidebar-accent: oklch(0.15 0.02 270);
-  --sidebar-accent-foreground: oklch(0.95 0 0);
-  --sidebar-border: oklch(0.2 0.02 270);
-  --sidebar-ring: oklch(0.75 0.15 195);
-}
+  --color-fg: #eeebe5;
+  --color-fg-2: #bdb9b1;
+  --color-fg-3: #8d8a84;
+  --color-fg-4: #64625e;
 
-@theme inline {
-  --font-sans: 'Geist', 'Geist Fallback';
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-signal: #d4ff3f;
+  --color-signal-deep: #a9d400;
+
+  /* Tints for project artwork only */
+  --color-tint-lime: #d4ff3f;
+  --color-tint-sky: #7cc8ff;
+  --color-tint-amber: #ffb35c;
+  --color-tint-violet: #b99bff;
+  --color-tint-rose: #ff7ab6;
+  --color-tint-mint: #5cffc4;
+  --color-tint-gold: #ffd84d;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-bricolage), var(--font-geist-sans), ui-sans-serif, sans-serif;
+  --font-serif: var(--font-instrument-serif), 'Iowan Old Style', Georgia, serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--color-line);
   }
   html {
-    scroll-behavior: smooth;
+    color-scheme: dark;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--color-bg);
+    overflow-x: clip;
   }
   body {
-    @apply bg-background text-foreground;
+    background: var(--color-bg);
+    color: var(--color-fg);
+    /* `clip`, not `hidden`: hidden would create a scroll container and
+       break position: sticky (the pinned project rail depends on it). */
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--color-signal);
+    color: var(--color-bg);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 }
 
-/* ============================================
-   CUSTOM SCROLLBAR
-   ============================================ */
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* Custom cursor: hide the native one only once ours is mounted */
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+html.has-cursor input,
+html.has-cursor textarea {
+  cursor: text !important;
+}
+
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: var(--color-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, oklch(0.75 0.15 195), oklch(0.65 0.15 285));
-  border-radius: 4px;
+  background: var(--color-line-strong);
+  border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
+  background: var(--color-fg-4);
 }
 
-/* ============================================
-   SELECTION
-   ============================================ */
-::selection {
-  background: oklch(0.7 0.15 180 / 0.3);
-  color: var(--foreground);
+/* ============================================================
+   FILM GRAIN — fixed, animated in steps so it shimmers like film
+   rather than sliding.
+   ============================================================ */
+@layer components {
+  .grain {
+    position: fixed;
+    inset: -100%;
+    z-index: 90;
+    pointer-events: none;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain 1.2s steps(6) infinite;
+  }
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-6%, 4%); }
+  40% { transform: translate(4%, -8%); }
+  60% { transform: translate(-8%, 2%); }
+  80% { transform: translate(6%, 6%); }
+  100% { transform: translate(0, 0); }
 }
 
-/* ============================================
-   GLOW / PULSE EFFECTS
-   ============================================ */
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+/* ============================================================
+   KEYFRAMES & UTILITIES
+   ============================================================ */
+@keyframes marquee-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-x-rev {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+@keyframes ping-soft {
+  0% { transform: scale(1); opacity: 0.7; }
+  80%, 100% { transform: scale(2.6); opacity: 0; }
+}
+@keyframes scroll-line {
+  0% { transform: scaleY(0); transform-origin: top; }
+  45% { transform: scaleY(1); transform-origin: top; }
+  55% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+@keyframes dash {
+  to { stroke-dashoffset: -40; }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
+@layer components {
+  .marquee-track {
+    animation: marquee-x 40s linear infinite;
+    will-change: transform;
+  }
+  .marquee-track-rev {
+    animation: marquee-x-rev 44s linear infinite;
+    will-change: transform;
+  }
+  .marquee:hover .marquee-track,
+  .marquee:hover .marquee-track-rev {
+    animation-play-state: paused;
+  }
+
+  .ping-soft {
+    animation: ping-soft 2s var(--ease-out-expo) infinite;
+  }
+
+  .scroll-line {
+    animation: scroll-line 2.2s var(--ease-in-out-quart) infinite;
+  }
+
+  .spin-slow {
+    animation: spin-slow 18s linear infinite;
+  }
+
+
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--color-fg-4);
+  }
+
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 72px 72px;
+  }
+
+  /* Rolling-text hover: the label slides up and an identical copy slides in
+     from below. Markup: .roll > span[data-text] */
+  .roll {
+    position: relative;
+    display: inline-flex;
+    overflow: hidden;
+    line-height: 1.2;
+  }
+  .roll > span {
+    display: inline-block;
+    transition: transform 0.55s var(--ease-out-expo);
+  }
+  .roll > span::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 100%;
+  }
+  .group:hover .roll > span,
+  .roll:hover > span {
+    transform: translateY(-100%);
+  }
+
+  /* Card sheen that sweeps across on hover */
+  .sheen {
+    position: relative;
+    overflow: hidden;
+  }
+  .sheen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.07) 50%, transparent 65%);
+    transform: translateX(-120%);
+    transition: transform 1s var(--ease-out-expo);
+    pointer-events: none;
+  }
+  .sheen:hover::after {
+    transform: translateX(120%);
+  }
 }
 
-/* ============================================
-   GRADIENT TEXT ANIMATION
-   ============================================ */
-@keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-.animate-gradient {
-  background-size: 200% 200%;
-  animation: gradient-shift 3s ease infinite;
-}
-
-/* ============================================
-   AURORA BACKGROUND ANIMATION
-   ============================================ */
-@keyframes aurora {
-  0% { transform: translateX(-50%) translateY(-50%) rotate(0deg) scale(1); }
-  33% { transform: translateX(-30%) translateY(-60%) rotate(120deg) scale(1.2); }
-  66% { transform: translateX(-60%) translateY(-40%) rotate(240deg) scale(0.9); }
-  100% { transform: translateX(-50%) translateY(-50%) rotate(360deg) scale(1); }
-}
-
-.aurora-bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.aurora-blob {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  border-radius: 50%;
-  filter: blur(80px);
-  animation: aurora 20s linear infinite;
-  mix-blend-mode: screen;
-}
-
-/* ============================================
-   MARQUEE ANIMATION
-   ============================================ */
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-marquee {
-  animation: marquee 30s linear infinite;
-}
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-
-/* ============================================
-   SCAN LINE EFFECT (optional premium look)
-   ============================================ */
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100vh); }
-}
-
-/* ============================================
-   SMOOTH SCROLL SNAP
-   ============================================ */
-.scroll-snap-y {
-  scroll-snap-type: y mandatory;
-}
-.scroll-snap-section {
-  scroll-snap-align: start;
-}
-
-/* ============================================
-   ADMIN PANEL SPECIFIC STYLES
-   ============================================ */
+/* ============================================================
+   ADMIN PANEL — its own scheme, untouched by the public site.
+   ============================================================ */
 .admin-root {
   font-family: var(--font-sans, system-ui);
   color-scheme: dark;
+  background: #0b0f1a;
+  color: #fff;
+  min-height: 100vh;
 }
-
-.admin-root input[type="range"] {
+.admin-root input[type='range'] {
   -webkit-appearance: none;
   appearance: none;
   height: 4px;
@@ -220,23 +266,15 @@
   outline: none;
   cursor: pointer;
 }
-
-.admin-root input[type="range"]::-webkit-slider-thumb {
+.admin-root input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: rgb(34, 211, 238);
-  box-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+  background: rgb(251, 191, 36);
   cursor: pointer;
-  transition: transform 0.15s;
 }
-
-.admin-root input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.25);
-}
-
 .admin-root select {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.3)' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
@@ -246,43 +284,18 @@
   padding-right: 40px !important;
 }
 
-/* Glassmorphism card hover glow */
-.glass-glow:hover {
-  box-shadow: 0 0 40px rgba(34, 211, 238, 0.08);
-}
-
-/* Animated border gradient */
-@keyframes border-rotate {
-  from { --angle: 0deg; }
-  to { --angle: 360deg; }
-}
-
-/* Skill bar shimmer */
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-.skill-shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent 25%,
-    rgba(255, 255, 255, 0.15) 50%,
-    transparent 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-/* Floating animation */
-.float {
-  animation: float 6s ease-in-out infinite;
-}
-
-/* Text gradient */
-.text-gradient-cyan {
-  background: linear-gradient(135deg, #22d3ee, #818cf8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .grain {
+    display: none;
+  }
 }

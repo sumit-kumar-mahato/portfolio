@@ -1,145 +1,124 @@
 "use client"
 
-import { motion, useInView } from "framer-motion"
-import { useRef, useEffect, useState } from "react"
-import { Brain, TrendingUp } from "lucide-react"
+import { useMemo } from "react"
+import { motion } from "framer-motion"
 
-type Skill = { id: number; name: string; level: number; category: string }
+import { usePortfolio } from "@/components/portfolio-provider"
+import type { Skill, Tool } from "@/lib/portfolio-data"
+import { SectionHeader } from "@/components/ui/section-header"
 
-const CATEGORY_COLORS: Record<string, string> = {
-  "Programming": "from-cyan-500 to-blue-600",
-  "AI/ML": "from-purple-500 to-pink-600",
-  "Data": "from-emerald-500 to-teal-600",
-  "Analytics": "from-amber-500 to-orange-600",
-  "Other": "from-slate-500 to-zinc-600",
-}
+const EASE = [0.16, 1, 0.3, 1] as const
 
-const CATEGORY_GLOW: Record<string, string> = {
-  "Programming": "shadow-cyan-500/30",
-  "AI/ML": "shadow-purple-500/30",
-  "Data": "shadow-emerald-500/30",
-  "Analytics": "shadow-amber-500/30",
-  "Other": "shadow-slate-500/30",
-}
-
-export default function Skills() {
-  const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
-  const [skills, setSkills] = useState<Skill[]>([])
-
-  useEffect(() => {
-    fetch("/api/portfolio").then((r) => r.json()).then((d) => { if (d.skills) setSkills(d.skills) }).catch(() => {})
-  }, [])
-
-  if (skills.length === 0) return null
-
-  const categories = [...new Set(skills.map((s) => s.category))]
-
+function CategoryRow({ index, category, skills }: { index: number; category: string; skills: Skill[] }) {
   return (
-    <section id="skills" className="py-32 px-6 relative bg-background overflow-hidden" ref={ref}>
-      {/* Background decoration */}
-      <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 0.03 } : {}}
-        className="absolute top-20 left-10 text-[20vw] font-black text-foreground pointer-events-none select-none hidden lg:block leading-none">
-        05
-      </motion.div>
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.9, ease: EASE }}
+      className="group relative isolate grid gap-6 border-t border-line py-8 sm:py-10 lg:grid-cols-12 lg:gap-10"
+    >
+      {/* Hover wash */}
+      <span className="pointer-events-none absolute inset-0 -z-10 origin-bottom scale-y-0 bg-gradient-to-t from-signal/[0.06] to-transparent transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100" />
 
-      {/* Glowing orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div animate={{ x: [0, 40, 0], y: [0, -30, 0] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/3 right-1/4 w-64 h-64 rounded-full bg-purple-500/5 blur-3xl" />
-        <motion.div animate={{ x: [0, -30, 0], y: [0, 40, 0] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute bottom-1/3 left-1/4 w-80 h-80 rounded-full bg-cyan-500/5 blur-3xl" />
+      <div className="flex items-baseline gap-5 lg:col-span-5">
+        <span className="font-mono text-xs text-fg-4">0{index + 1}</span>
+        <h3 className="font-display text-4xl font-semibold tracking-[-0.04em] text-fg transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-3 group-hover:text-signal sm:text-6xl">
+          {category}
+        </h3>
       </div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        {/* Header */}
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="mb-20">
-          <div className="flex items-center gap-4 mb-4">
-            <span className="text-cyan-400 font-mono text-sm">05</span>
-            <div className="h-px w-12 bg-cyan-400" />
-            <span className="text-xs tracking-[0.3em] text-muted-foreground uppercase">What I Know</span>
-          </div>
-          <h2 className="text-4xl md:text-6xl font-bold text-foreground flex items-center gap-4">
-            Skills <Brain className="w-10 h-10 text-cyan-400 inline" />
-          </h2>
-        </motion.div>
-
-        {/* Category groups */}
-        <div className="space-y-16">
-          {categories.map((category, ci) => {
-            const categorySkills = skills.filter((s) => s.category === category)
-            const gradient = CATEGORY_COLORS[category] || CATEGORY_COLORS["Other"]
-            const glow = CATEGORY_GLOW[category] || CATEGORY_GLOW["Other"]
-
-            return (
-              <motion.div key={category} initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: ci * 0.1 }}>
-                <div className="flex items-center gap-3 mb-8">
-                  <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg ${glow}`}>
-                    <TrendingUp className="w-4 h-4 text-white" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-white">{category}</h3>
-                  <div className="flex-1 h-px bg-white/10" />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {categorySkills.map((skill, i) => (
-                    <SkillBar key={skill.id} skill={skill} gradient={gradient} glow={glow} index={i} isInView={isInView} />
-                  ))}
-                </div>
-              </motion.div>
-            )
-          })}
-        </div>
-      </div>
-    </section>
+      <ul className="grid gap-x-10 gap-y-5 sm:grid-cols-2 lg:col-span-7">
+        {skills.map((s, i) => (
+          <li key={s.id} className="space-y-2.5">
+            <div className="flex items-baseline justify-between gap-4">
+              <span className="text-base font-medium text-fg-2 sm:text-lg">{s.name}</span>
+              <span className="font-mono text-xs tabular-nums text-fg-4">{s.level}%</span>
+            </div>
+            <div className="h-[3px] overflow-hidden rounded-full bg-line">
+              <motion.div
+                className="h-full origin-left rounded-full bg-gradient-to-r from-fg-3 to-signal"
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: s.level / 100 }}
+                viewport={{ once: true, amount: 0.8 }}
+                transition={{ duration: 1.6, ease: EASE, delay: 0.15 + i * 0.08 }}
+              />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </motion.div>
   )
 }
 
-function SkillBar({ skill, gradient, glow, index, isInView }: {
-  skill: Skill; gradient: string; glow: string; index: number; isInView: boolean
-}) {
+function ToolPill({ tool }: { tool: Tool }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={isInView ? { opacity: 1, x: 0 } : {}}
-      transition={{ delay: index * 0.08 + 0.2 }}
-      className="group p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-white/20 hover:bg-white/[0.06] transition-all duration-300"
-    >
-      <div className="flex justify-between items-center mb-3">
-        <span className="text-white font-semibold text-sm">{skill.name}</span>
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: index * 0.08 + 0.5 }}
-          className={`text-sm font-bold bg-gradient-to-r ${gradient} bg-clip-text text-transparent`}
-        >
-          {skill.level}%
-        </motion.span>
-      </div>
+    <span className="group mx-2 flex shrink-0 items-center gap-3 rounded-full border border-line bg-card py-2 pl-2 pr-6 transition-colors duration-500 hover:border-signal/50">
+      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-fg p-2.5 transition-transform duration-500 group-hover:rotate-[360deg]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={tool.logo} alt="" className="h-full w-full object-contain" loading="lazy" />
+      </span>
+      <span className="font-display text-lg font-medium text-fg-2 transition-colors group-hover:text-fg">
+        {tool.name}
+      </span>
+    </span>
+  )
+}
 
-      {/* Progress bar track */}
-      <div className="h-2 rounded-full bg-white/10 overflow-hidden">
-        <motion.div
-          className={`h-full rounded-full bg-gradient-to-r ${gradient} shadow-lg ${glow}`}
-          initial={{ width: 0 }}
-          animate={isInView ? { width: `${skill.level}%` } : { width: 0 }}
-          transition={{ duration: 1.2, delay: index * 0.08 + 0.3, ease: "easeOut" }}
+export default function Skills() {
+  const { skills, tools } = usePortfolio()
+
+  const groups = useMemo(() => {
+    const map = new Map<string, Skill[]>()
+    for (const s of skills) {
+      if (!map.has(s.category)) map.set(s.category, [])
+      map.get(s.category)!.push(s)
+    }
+    return Array.from(map.entries()).sort((a, b) => b[1].length - a[1].length)
+  }, [skills])
+
+  const half = Math.ceil(tools.length / 2)
+  const rowA = tools.slice(0, half)
+  const rowB = tools.slice(half).length ? tools.slice(half) : tools
+
+  return (
+    <section id="skills" className="relative overflow-hidden px-5 py-28 sm:px-8 sm:py-32">
+      <div className="mx-auto max-w-[1600px] space-y-16 sm:space-y-24">
+        <SectionHeader
+          index="02"
+          label="Capabilities"
+          title="Tools of"
+          accent="the trade."
+          aside="From statistics to production pipelines — the stack I reach for when the data gets serious."
         />
+
+        {groups.length > 0 && (
+          <div className="border-b border-line">
+            {groups.map(([cat, list], i) => (
+              <CategoryRow key={cat} index={i} category={cat} skills={list} />
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Glowing dots at skill level */}
-      <div className="flex gap-1.5 mt-3">
-        {[...Array(10)].map((_, i) => (
-          <motion.div
-            key={i}
-            className={`flex-1 h-1 rounded-full ${i < Math.round(skill.level / 10) ? `bg-gradient-to-r ${gradient}` : "bg-white/10"}`}
-            initial={{ opacity: 0, scaleY: 0 }}
-            animate={isInView ? { opacity: 1, scaleY: 1 } : {}}
-            transition={{ delay: index * 0.08 + 0.4 + i * 0.05 }}
-          />
-        ))}
-      </div>
-    </motion.div>
+      {tools.length > 0 && (
+        <div className="marquee mask-fade-x mt-20 space-y-4 sm:mt-28">
+          <div className="flex w-max">
+            <div className="marquee-track flex">
+              {[...rowA, ...rowA, ...rowA, ...rowA].map((t, i) => (
+                <ToolPill key={`${t.id}-${i}`} tool={t} />
+              ))}
+            </div>
+          </div>
+          <div className="flex w-max">
+            <div className="marquee-track-rev flex">
+              {[...rowB, ...rowB, ...rowB, ...rowB].map((t, i) => (
+                <ToolPill key={`${t.id}-${i}`} tool={t} />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
   )
 }

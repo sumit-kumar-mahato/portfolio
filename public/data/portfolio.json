@@ -2,23 +2,74 @@
   "hero": {
     "name": "Sumit Kumar Mahato",
     "tagline": "AI & Data Science",
-    "description": "A DATA SCIENTIST PASSIONATE ABOUT CRAFTING BOLD AND MEMORABLE PROJECTS 😎",
-    "resumeUrl": "#"
+    "description": "Data Science & AI professional working across machine learning, deep learning, big data analytics and business intelligence.",
+    "resumeUrl": "#",
+    "backgroundImage": ""
   },
   "about": {
     "bio": "With a strong technical foundation in AI and Big Data Analytics, I specialize in building intelligent models, robust system architectures, and actionable business insights.\n\nI love collaborating with teams that want to innovate and push the boundaries of data science.\n\nLet's create something amazing together!"
   },
   "skills": [
-    { "id": 1, "name": "Python", "level": 90, "category": "Programming" },
-    { "id": 2, "name": "Machine Learning", "level": 85, "category": "AI/ML" },
-    { "id": 3, "name": "Deep Learning", "level": 75, "category": "AI/ML" },
-    { "id": 4, "name": "SQL", "level": 85, "category": "Data" },
-    { "id": 5, "name": "Power BI", "level": 80, "category": "Analytics" },
-    { "id": 6, "name": "Pandas / NumPy", "level": 88, "category": "Data" },
-    { "id": 7, "name": "Computer Vision", "level": 78, "category": "AI/ML" },
-    { "id": 8, "name": "NLP", "level": 72, "category": "AI/ML" },
-    { "id": 9, "name": "Data Visualization", "level": 85, "category": "Analytics" },
-    { "id": 10, "name": "LangChain / GenAI", "level": 70, "category": "AI/ML" }
+    {
+      "id": 1,
+      "name": "Python",
+      "level": 90,
+      "category": "Programming"
+    },
+    {
+      "id": 2,
+      "name": "Machine Learning",
+      "level": 85,
+      "category": "AI/ML"
+    },
+    {
+      "id": 3,
+      "name": "Deep Learning",
+      "level": 75,
+      "category": "AI/ML"
+    },
+    {
+      "id": 4,
+      "name": "SQL",
+      "level": 85,
+      "category": "Data"
+    },
+    {
+      "id": 5,
+      "name": "Power BI",
+      "level": 80,
+      "category": "Analytics"
+    },
+    {
+      "id": 6,
+      "name": "Pandas / NumPy",
+      "level": 88,
+      "category": "Data"
+    },
+    {
+      "id": 7,
+      "name": "Computer Vision",
+      "level": 78,
+      "category": "AI/ML"
+    },
+    {
+      "id": 8,
+      "name": "NLP",
+      "level": 72,
+      "category": "AI/ML"
+    },
+    {
+      "id": 9,
+      "name": "Data Visualization",
+      "level": 85,
+      "category": "Analytics"
+    },
+    {
+      "id": 10,
+      "name": "LangChain / GenAI",
+      "level": 70,
+      "category": "AI/ML"
+    }
   ],
   "experience": [
     {
@@ -89,9 +140,13 @@
       "title": "Stroke Prediction Model",
       "category": "Machine Learning",
       "description": "Developed an advanced predictive model using Machine Learning techniques to accurately identify individuals at risk of experiencing a stroke based on various health indicators.",
-      "tech": ["Python", "XGBoost", "Scikit-learn"],
-      "gradient": "from-cyan-900/80 to-blue-900/80",
-      "border": "border-cyan-500/30",
+      "tech": [
+        "Python",
+        "XGBoost",
+        "Scikit-learn"
+      ],
+      "gradient": "from-orange-100 to-amber-50",
+      "border": "border-orange-200",
       "github": "https://github.com/sumit-kumar-mahato/Stroke-Prediction",
       "live": "#",
       "colSpan": "md:col-span-2 lg:col-span-2"
@@ -101,9 +156,13 @@
       "title": "Enterprise LLM Assistant",
       "category": "GenAI",
       "description": "A sophisticated Generative AI integration utilizing state-of-the-art Large Language Models (LLMs) to construct contextual conversational agents and intelligent RAG systems.",
-      "tech": ["Python", "LangChain", "OpenAI"],
-      "gradient": "from-indigo-900/80 to-fuchsia-900/80",
-      "border": "border-fuchsia-500/30",
+      "tech": [
+        "Python",
+        "LangChain",
+        "OpenAI"
+      ],
+      "gradient": "from-violet-100 to-indigo-50",
+      "border": "border-violet-200",
       "github": "#",
       "live": "#",
       "colSpan": "col-span-1"
@@ -113,9 +172,13 @@
       "title": "Computer Vision Ecosystem",
       "category": "Computer Vision",
       "description": "An end-to-end repository encompassing basic image processing, advanced deep learning models, and real-time video analytics for dynamic environments.",
-      "tech": ["Python", "OpenCV", "Deep Learning"],
-      "gradient": "from-purple-900/80 to-pink-900/80",
-      "border": "border-purple-500/30",
+      "tech": [
+        "Python",
+        "OpenCV",
+        "Deep Learning"
+      ],
+      "gradient": "from-rose-100 to-orange-50",
+      "border": "border-rose-200",
       "github": "https://github.com/sumit-kumar-mahato/Computer-Vision",
       "live": "#",
       "colSpan": "col-span-1"
@@ -125,9 +188,13 @@
       "title": "Obesity Classification",
       "category": "Machine Learning",
       "description": "Classification model to predict weight categories utilizing demographic, lifestyle, and comprehensive health-related factors.",
-      "tech": ["Python", "Pandas", "Machine Learning"],
-      "gradient": "from-emerald-900/80 to-teal-900/80",
-      "border": "border-teal-500/30",
+      "tech": [
+        "Python",
+        "Pandas",
+        "Machine Learning"
+      ],
+      "gradient": "from-emerald-100 to-teal-50",
+      "border": "border-emerald-200",
       "github": "https://github.com/sumit-kumar-mahato/Obesity_classification",
       "live": "#",
       "colSpan": "col-span-1"
@@ -137,9 +204,13 @@
       "title": "AI Resume Analyzer",
       "category": "NLP & AI",
       "description": "A natural language processing utility engineered to evaluate resumes, align them against core job requirements, and systematically identify critical skill gaps.",
-      "tech": ["Python", "NLP", "Spacy"],
-      "gradient": "from-rose-900/80 to-red-900/80",
-      "border": "border-rose-500/30",
+      "tech": [
+        "Python",
+        "NLP",
+        "Spacy"
+      ],
+      "gradient": "from-sky-100 to-blue-50",
+      "border": "border-sky-200",
       "github": "https://github.com/sumit-kumar-mahato/resume-analyzer",
       "live": "#",
       "colSpan": "md:col-span-2 lg:col-span-1"
@@ -149,9 +220,13 @@
       "title": "Bird Species Identifier",
       "category": "Deep Learning",
       "description": "An AI-powered image recognition tool leveraging Convolutional Neural Networks (CNN) to accurately classify and identify various species of birds from user uploads.",
-      "tech": ["Python", "CNN", "Keras"],
-      "gradient": "from-violet-900/80 to-indigo-900/80",
-      "border": "border-indigo-500/30",
+      "tech": [
+        "Python",
+        "CNN",
+        "Keras"
+      ],
+      "gradient": "from-amber-100 to-yellow-50",
+      "border": "border-amber-200",
       "github": "https://github.com/sumit-kumar-mahato/Bird-Species-Identifier",
       "live": "#",
       "colSpan": "col-span-1"
@@ -161,9 +236,13 @@
       "title": "SHG Business OS",
       "category": "Full Stack",
       "description": "A robust organizational system encompassing an Admin OS and User OS to seamlessly manage Self Help Group businesses and resource allocation.",
-      "tech": ["Python", "Backend OS", "System Architecture"],
-      "gradient": "from-orange-900/80 to-yellow-900/80",
-      "border": "border-amber-500/30",
+      "tech": [
+        "Python",
+        "Backend OS",
+        "System Architecture"
+      ],
+      "gradient": "from-fuchsia-100 to-pink-50",
+      "border": "border-fuchsia-200",
       "github": "https://github.com/sumit-kumar-mahato/shg-os-app",
       "live": "#",
       "colSpan": "md:col-span-2 lg:col-span-2"
@@ -173,9 +252,12 @@
       "title": "Blinkit Sales Dashboard",
       "category": "Data Analytics",
       "description": "Interactive data visualization and business intelligence dashboard analyzing Blinkit sales, inventory metrics, and localized operational trends.",
-      "tech": ["PowerBI", "Data Analytics"],
-      "gradient": "from-blue-900/80 to-cyan-900/80",
-      "border": "border-sky-500/30",
+      "tech": [
+        "PowerBI",
+        "Data Analytics"
+      ],
+      "gradient": "from-lime-100 to-emerald-50",
+      "border": "border-lime-200",
       "github": "https://github.com/sumit-kumar-mahato/Blinkit_PowerBI",
       "live": "#",
       "colSpan": "col-span-1"
@@ -185,9 +267,12 @@
       "title": "Monday Coffee Analytics",
       "category": "Data Analytics",
       "description": "Analyzed extensive sales data for Monday Coffee to identify high-potential cities in India for rapid new store expansion based on latent consumer demand.",
-      "tech": ["SQL", "Data Analysis"],
-      "gradient": "from-red-900/80 to-orange-900/80",
-      "border": "border-red-500/30",
+      "tech": [
+        "SQL",
+        "Data Analysis"
+      ],
+      "gradient": "from-indigo-100 to-sky-50",
+      "border": "border-indigo-200",
       "github": "https://github.com/sumit-kumar-mahato/Monday-Coffee-Project",
       "live": "#",
       "colSpan": "col-span-1"
@@ -197,9 +282,12 @@
       "title": "Smart Pothole Detection",
       "category": "Computer Vision",
       "description": "An integrated Android application paired with a Machine Learning backend that utilizes mobile cameras to detect, map, and report road potholes in real-time.",
-      "tech": ["Python", "Computer Vision"],
-      "gradient": "from-slate-900/80 to-zinc-900/80",
-      "border": "border-gray-500/30",
+      "tech": [
+        "Python",
+        "Computer Vision"
+      ],
+      "gradient": "from-stone-100 to-neutral-50",
+      "border": "border-stone-200",
       "github": "https://github.com/sumit-kumar-mahato/pothole-detection",
       "live": "#",
       "colSpan": "col-span-1"
@@ -211,7 +299,7 @@
       "title": "SQL and Relational Databases",
       "issuer": "IBM",
       "icon": "IBM",
-      "color": "from-blue-500 to-blue-600",
+      "color": "from-sky-500 to-blue-600",
       "link": "#"
     },
     {
@@ -219,7 +307,7 @@
       "title": "Python for Data Science",
       "issuer": "Learnbay",
       "icon": "PY",
-      "color": "from-yellow-500 to-orange-500",
+      "color": "from-amber-500 to-orange-600",
       "link": "#"
     },
     {
@@ -227,7 +315,7 @@
       "title": "Data Visualization with Python",
       "issuer": "IBM",
       "icon": "IBM",
-      "color": "from-cyan-500 to-blue-500",
+      "color": "from-violet-500 to-purple-600",
       "link": "#"
     },
     {
@@ -235,21 +323,61 @@
       "title": "Revit",
       "issuer": "Autodesk",
       "icon": "AD",
-      "color": "from-green-500 to-teal-500",
+      "color": "from-emerald-500 to-teal-600",
       "link": "#"
     }
   ],
   "tools": [
-    { "id": 1, "name": "Python", "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
-    { "id": 2, "name": "Pandas", "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" },
-    { "id": 3, "name": "NumPy", "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg" },
-    { "id": 4, "name": "Matplotlib", "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matplotlib/matplotlib-original.svg" },
-    { "id": 5, "name": "SQL", "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azuresqldatabase/azuresqldatabase-original.svg" },
-    { "id": 6, "name": "Power BI", "logo": "https://upload.wikimedia.org/wikipedia/commons/c/cf/New_Power_BI_Logo.svg" },
-    { "id": 7, "name": "Tableau", "logo": "https://cdn.worldvectorlogo.com/logos/tableau-software.svg" },
-    { "id": 8, "name": "Excel", "logo": "https://upload.wikimedia.org/wikipedia/commons/3/34/Microsoft_Office_Excel_%282019%E2%80%93present%29.svg" },
-    { "id": 9, "name": "PowerPoint", "logo": "https://upload.wikimedia.org/wikipedia/commons/0/0d/Microsoft_Office_PowerPoint_%282019%E2%80%93present%29.svg" },
-    { "id": 10, "name": "SAP", "logo": "https://cdn.worldvectorlogo.com/logos/sap-2.svg" }
+    {
+      "id": 1,
+      "name": "Python",
+      "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+    },
+    {
+      "id": 2,
+      "name": "Pandas",
+      "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg"
+    },
+    {
+      "id": 3,
+      "name": "NumPy",
+      "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg"
+    },
+    {
+      "id": 4,
+      "name": "Matplotlib",
+      "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matplotlib/matplotlib-original.svg"
+    },
+    {
+      "id": 5,
+      "name": "SQL",
+      "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azuresqldatabase/azuresqldatabase-original.svg"
+    },
+    {
+      "id": 6,
+      "name": "Power BI",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/c/cf/New_Power_BI_Logo.svg"
+    },
+    {
+      "id": 7,
+      "name": "Tableau",
+      "logo": "https://cdn.worldvectorlogo.com/logos/tableau-software.svg"
+    },
+    {
+      "id": 8,
+      "name": "Excel",
+      "logo": "/excel.svg"
+    },
+    {
+      "id": 9,
+      "name": "PowerPoint",
+      "logo": "/powerpoint.svg"
+    },
+    {
+      "id": 10,
+      "name": "SAP",
+      "logo": "https://cdn.worldvectorlogo.com/logos/sap-2.svg"
+    }
   ],
   "contact": {
     "email": "sumitmahato.aids25@aidtm.ac.in",

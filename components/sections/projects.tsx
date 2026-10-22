@@ -1,101 +1,191 @@
 "use client"
 
-import { motion, AnimatePresence, useInView } from "framer-motion"
-import { useState, useRef, useEffect } from "react"
-import { ArrowUpRight, Github } from "lucide-react"
+import { useLayoutEffect, useRef, useState } from "react"
+import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion"
+import { ArrowUpRight } from "lucide-react"
 
-type Project = {
-  id: number; title: string; category: string; description: string;
-  tech: string[]; gradient: string; border: string; github: string; live: string; colSpan: string
-}
+import { usePortfolio } from "@/components/portfolio-provider"
+import type { Project } from "@/lib/portfolio-data"
+import { ProjectArt, artFor } from "@/components/ui/project-art"
+import { SplitWords } from "@/components/ui/split-text"
+import { useMediaQuery } from "@/lib/use-mounted"
 
-const defaultProjects: Project[] = []
-const categories = ["All", "Machine Learning", "Deep Learning", "Computer Vision", "GenAI", "NLP & AI", "Data Analytics", "Full Stack"]
+const EASE = [0.16, 1, 0.3, 1] as const
+const hasLink = (url?: string) => !!url && url !== "#"
 
-export default function Projects() {
-  const [activeCategory, setActiveCategory] = useState("All")
-  const [projects, setProjects] = useState<Project[]>(defaultProjects)
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
-
-  useEffect(() => {
-    fetch("/api/portfolio").then((r) => r.json()).then((d) => { if (d.projects) setProjects(d.projects) }).catch(() => {})
-  }, [])
-
-  const filteredProjects = projects.filter((p) => activeCategory === "All" || p.category === activeCategory)
-  const visibleCategories = ["All", ...Array.from(new Set(projects.map((p) => p.category)))]
+function ProjectCard({ project, index, total }: { project: Project; index: number; total: number }) {
+  const { tint } = artFor(project.category)
+  const link = hasLink(project.live) ? project.live : hasLink(project.github) ? project.github : null
+  const Tag = link ? "a" : "div"
 
   return (
-    <section id="projects" className="py-32 px-6 relative bg-background overflow-hidden" ref={ref}>
-      <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 0.03 } : {}}
-        className="absolute top-20 right-10 text-[20vw] font-black text-foreground pointer-events-none select-none hidden lg:block">03</motion.div>
+    <Tag
+      {...(link ? { href: link, target: "_blank", rel: "noopener noreferrer", "data-cursor": "Open" } : {})}
+      className="group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-line bg-card transition-colors duration-500 hover:border-line-strong"
+    >
+      {/* Artwork */}
+      <div className="relative aspect-[4/3] overflow-hidden border-b border-line lg:aspect-auto lg:flex-1">
+        <div
+          className="absolute inset-0 opacity-60 transition-opacity duration-700 group-hover:opacity-100"
+          style={{ background: `radial-gradient(ellipse 80% 70% at 50% 110%, color-mix(in srgb, ${tint} 22%, transparent), transparent 70%)` }}
+        />
+        <div className="grid-bg absolute inset-0 opacity-60" />
+        <ProjectArt
+          category={project.category}
+          seed={project.id}
+          className="absolute inset-0 m-auto h-[82%] w-[82%] transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]"
+        />
+        <div className="absolute inset-x-5 top-5 flex items-center justify-between">
+          <span className="flex items-center gap-2 rounded-full border border-line bg-bg/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-fg-2 backdrop-blur-md">
+            <span className="h-1.5 w-1.5 rounded-full" style={{ background: tint }} />
+            {project.category}
+          </span>
+          <span className="font-mono text-[11px] tabular-nums text-fg-4">
+            {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+          </span>
+        </div>
+      </div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="text-center mb-16">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <span className="text-cyan-400 font-mono text-sm">03</span>
-            <div className="h-px w-12 bg-cyan-400" />
-            <span className="text-xs tracking-[0.3em] text-muted-foreground uppercase">Selected Work</span>
-            <div className="h-px w-12 bg-cyan-400" />
-          </div>
-          <h2 className="text-4xl md:text-6xl font-bold text-foreground">Featured Projects</h2>
-        </motion.div>
-
-        {/* Category filter */}
-        <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 mb-16">
-          {visibleCategories.map((category) => (
-            <button key={category} onClick={() => setActiveCategory(category)}
-              className={`relative px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${activeCategory === category ? "text-black" : "text-muted-foreground hover:text-foreground hover:bg-white/5"}`}>
-              {activeCategory === category && (
-                <motion.div layoutId="activeCategory" className="absolute inset-0 bg-cyan-400 rounded-full shadow-[0_0_20px_rgba(34,211,238,0.4)]"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }} />
-              )}
-              <span className="relative z-10">{category}</span>
-            </button>
+      {/* Body */}
+      <div className="space-y-5 p-6 sm:p-7">
+        <div className="flex items-start justify-between gap-4">
+          <h3 className="font-display text-2xl font-semibold leading-[1.05] tracking-[-0.03em] text-fg sm:text-[1.9rem]">
+            {project.title}
+          </h3>
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line text-fg transition-all duration-500 group-hover:rotate-45 group-hover:border-transparent group-hover:bg-signal group-hover:text-bg">
+            <ArrowUpRight className="h-4 w-4" />
+          </span>
+        </div>
+        <p className="line-clamp-3 text-sm leading-relaxed text-fg-3">{project.description}</p>
+        <div className="flex flex-wrap gap-1.5">
+          {project.tech.map((t) => (
+            <span key={t} className="rounded-full border border-line px-3 py-1 font-mono text-[10.5px] text-fg-2">
+              {t}
+            </span>
           ))}
         </div>
+      </div>
+    </Tag>
+  )
+}
 
-        {/* Bento grid */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
-              <motion.div key={project.id} layout initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.4, type: "spring", bounce: 0.2 }}
-                className={`group relative rounded-[2rem] overflow-hidden border ${project.border} bg-card min-h-[400px] flex flex-col ${activeCategory === "All" ? project.colSpan : "col-span-1"}`}>
-                <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-90 transition-opacity duration-500 group-hover:opacity-100`} />
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none transition-transform duration-700 group-hover:scale-150" />
-                <div className="relative z-10 p-8 md:p-10 flex flex-col h-full justify-between">
-                  <div>
-                    <span className="inline-block px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-[10px] font-mono uppercase tracking-widest mb-6">{project.category}</span>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight leading-tight group-hover:text-cyan-200 transition-colors duration-300">{project.title}</h3>
-                    <p className="text-white/70 text-sm md:text-base leading-relaxed font-light mb-8 line-clamp-4">{project.description}</p>
-                  </div>
-                  <div className="flex flex-col gap-6 mt-auto">
-                    <div className="flex flex-wrap gap-2">
-                      {project.tech.map((tech) => (
-                        <span key={tech} className="px-3 py-1 rounded-lg bg-black/40 backdrop-blur-md text-white/90 border border-white/10 text-xs font-medium">{tech}</span>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-3 pt-4 border-t border-white/10">
-                      {project.github !== "#" && (
-                        <a href={project.github} target="_blank" rel="noopener noreferrer"
-                          className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-transform duration-300 hover:scale-110">
-                          <Github size={18} />
-                        </a>
-                      )}
-                      {project.live !== "#" && (
-                        <a href={project.live} target="_blank" rel="noopener noreferrer"
-                          className="flex items-center justify-center w-10 h-10 rounded-full bg-cyan-400 hover:bg-cyan-300 text-black transition-transform duration-300 hover:scale-110 shadow-lg shadow-cyan-400/20">
-                          <ArrowUpRight size={18} />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
+function Intro({ count }: { count: number }) {
+  return (
+    <div className="flex flex-col justify-between gap-10 lg:h-full lg:py-4">
+      <div className="space-y-4">
+        <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-fg-3">
+          <span className="text-signal">(04)</span> Selected work
+        </div>
+        <h2 className="font-display text-[clamp(3rem,7.5vw,8.5rem)] font-semibold leading-[0.9] tracking-[-0.05em] text-fg">
+          <SplitWords text="Things" />
+          <br />
+          <SplitWords text="I've built" delay={0.1} />
+          <sup className="ml-2 align-super font-mono text-base font-normal tracking-normal text-signal sm:text-xl">
+            ({count})
+          </sup>
+        </h2>
+      </div>
+      <div className="max-w-sm space-y-6">
+        <p className="text-base leading-relaxed text-fg-3">
+          Machine learning models, computer vision systems, NLP tools and BI dashboards — each one built
+          around a real question.
+        </p>
+        <p className="hidden items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-fg-4 lg:flex">
+          <span className="h-px w-10 bg-fg-4" /> Keep scrolling
+        </p>
+      </div>
+    </div>
+  )
+}
+
+export default function Projects() {
+  const { projects } = usePortfolio()
+  const desktop = useMediaQuery("(min-width: 1024px)")
+  const sectionRef = useRef<HTMLElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const [distance, setDistance] = useState(0)
+  const [active, setActive] = useState(0)
+
+  useLayoutEffect(() => {
+    if (!desktop) return
+    const track = trackRef.current
+    if (!track) return
+    const measure = () => setDistance(Math.max(0, track.scrollWidth - window.innerWidth))
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(track)
+    window.addEventListener("resize", measure)
+    return () => {
+      ro.disconnect()
+      window.removeEventListener("resize", measure)
+    }
+  }, [desktop, projects.length])
+
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end end"] })
+  const x = useTransform(scrollYProgress, (v) => -v * distance)
+  const bar = useSpring(scrollYProgress, { stiffness: 140, damping: 30 })
+
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    setActive(Math.min(projects.length - 1, Math.round(v * (projects.length - 1))))
+  })
+
+  if (!projects.length) return null
+
+  return (
+    <section
+      ref={sectionRef}
+      id="projects"
+      className="relative"
+      style={desktop && distance ? { height: `calc(100vh + ${distance}px)` } : undefined}
+    >
+      <div className={desktop ? "sticky top-0 flex h-screen flex-col justify-center overflow-hidden" : ""}>
+        <motion.div
+          ref={trackRef}
+          style={desktop ? { x } : undefined}
+          className={
+            desktop
+              ? "flex h-[74vh] w-max items-stretch gap-6 px-8 will-change-transform"
+              : "grid gap-6 px-5 py-28 sm:grid-cols-2 sm:px-8"
+          }
+        >
+          <div className={desktop ? "w-[34vw] shrink-0 pr-10" : "pb-6 sm:col-span-2"}>
+            <Intro count={projects.length} />
+          </div>
+
+          {projects.map((p, i) =>
+            desktop ? (
+              <div key={p.id} className="w-[min(32vw,540px)] shrink-0">
+                <ProjectCard project={p} index={i} total={projects.length} />
+              </div>
+            ) : (
+              <motion.div
+                key={p.id}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.9, ease: EASE }}
+              >
+                <ProjectCard project={p} index={i} total={projects.length} />
               </motion.div>
-            ))}
-          </AnimatePresence>
+            ),
+          )}
+          {desktop && <div className="w-[8vw] shrink-0" />}
         </motion.div>
+
+        {desktop && (
+          <div className="mx-8 mt-8 flex items-center gap-6">
+            <span className="w-16 font-mono text-xs tabular-nums text-fg-2">
+              {String(active + 1).padStart(2, "0")}
+              <span className="text-fg-4"> / {String(projects.length).padStart(2, "0")}</span>
+            </span>
+            <div className="h-px flex-1 bg-line">
+              <motion.div style={{ scaleX: bar }} className="h-px origin-left bg-signal" />
+            </div>
+            <span className="max-w-[16rem] truncate font-mono text-xs uppercase tracking-[0.16em] text-fg-3">
+              {projects[active]?.title}
+            </span>
+          </div>
+        )}
       </div>
     </section>
   )

@@ -1,128 +1,188 @@
 "use client"
 
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
-import { useState, useEffect } from "react"
-import { Menu, X, Download } from "lucide-react"
+import { useEffect, useState } from "react"
+import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring } from "framer-motion"
+import { ArrowUpRight } from "lucide-react"
 
-type HeroData = { resumeUrl?: string; name?: string }
+import { usePortfolio } from "@/components/portfolio-provider"
+import { useSite } from "@/components/smooth-scroll"
 
-const navItems = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Contact", href: "#contact" },
+const LINKS = [
+  { href: "#about", label: "About" },
+  { href: "#skills", label: "Skills" },
+  { href: "#experience", label: "Experience" },
+  { href: "#projects", label: "Work" },
+  { href: "#contact", label: "Contact" },
 ]
 
+const EASE = [0.76, 0, 0.24, 1] as const
+
+export function useLocalTime(timeZone = "Asia/Kolkata") {
+  const [time, setTime] = useState("--:--")
+  useEffect(() => {
+    const fmt = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone })
+    const tick = () => setTime(fmt.format(new Date()))
+    tick()
+    const id = setInterval(tick, 15_000)
+    return () => clearInterval(id)
+  }, [timeZone])
+  return time
+}
+
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [activeSection, setActiveSection] = useState("home")
-  const [heroData, setHeroData] = useState<HeroData>({})
-  const { scrollY } = useScroll()
-  
+  const { contact } = usePortfolio()
+  const { lenis, introDone } = useSite()
+  const [open, setOpen] = useState(false)
+  const [hidden, setHidden] = useState(false)
+  const time = useLocalTime()
+
+  const { scrollY, scrollYProgress } = useScroll()
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.001 })
+
+  useMotionValueEvent(scrollY, "change", (y) => {
+    const prev = scrollY.getPrevious() ?? 0
+    setHidden(y > 160 && y > prev)
+  })
+
   useEffect(() => {
-    fetch("/api/portfolio").then((r) => r.json()).then((d) => { if (d.hero) setHeroData(d.hero) }).catch(() => {})
-  }, [])
-
-  const backgroundColor = useTransform(scrollY, [0, 100], ["rgba(10, 10, 20, 0)", "rgba(10, 10, 20, 0.9)"])
-  const backdropBlur = useTransform(scrollY, [0, 100], ["blur(0px)", "blur(12px)"])
+    if (!lenis) return
+    if (open) lenis.stop()
+    else lenis.start()
+  }, [open, lenis])
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = navItems.map((item) => item.href.slice(1))
-      const current = sections.find((section) => {
-        const element = document.getElementById(section)
-        if (element) {
-          const rect = element.getBoundingClientRect()
-          return rect.top <= 100 && rect.bottom >= 100
-        }
-        return false
-      })
-      if (current) setActiveSection(current)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false)
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
   }, [])
-
-  const resumeUrl = heroData.resumeUrl && heroData.resumeUrl !== "#" ? heroData.resumeUrl : null
 
   return (
     <>
-      <motion.nav
-        style={{ backgroundColor, backdropFilter: backdropBlur }}
-        className="fixed top-0 left-0 right-0 z-50 border-b border-border/0"
+      {/* Scroll progress hairline */}
+      <motion.div
+        aria-hidden
+        style={{ scaleX: progress }}
+        className="fixed inset-x-0 top-0 z-[80] h-[2px] origin-left bg-signal"
+      />
+
+      <motion.header
+        initial={{ y: -40, opacity: 0 }}
+        animate={{ y: hidden && !open ? -110 : 0, opacity: introDone ? 1 : 0 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="fixed inset-x-0 top-0 z-[70] px-5 pt-5 sm:px-8 sm:pt-6"
       >
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <motion.a href="#home" className="text-xl font-bold text-foreground" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <span className="text-cyan-400">S</span>umit<span className="text-cyan-400">.</span>
-            </motion.a>
+        <nav className="flex items-center justify-between gap-6">
+          <a
+            href="#top"
+            className="group flex items-center gap-2.5 rounded-full border border-line bg-bg/75 py-1 pl-1 pr-1 text-fg backdrop-blur-xl sm:pr-4"
+            aria-label="Back to top"
+          >
+            <span className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-fg font-display text-sm font-bold text-bg transition-transform duration-500 group-hover:rotate-[360deg]">
+              SK
+            </span>
+            <span className="roll hidden font-display text-sm font-medium sm:inline-flex">
+              <span data-text="Sumit Kumar Mahato">Sumit Kumar Mahato</span>
+            </span>
+          </a>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-1">
-              {navItems.map((item, index) => (
-                <motion.a key={item.href} href={item.href}
-                  className={`relative px-4 py-2 text-sm font-medium transition-colors ${activeSection === item.href.slice(1) ? "text-cyan-400" : "text-muted-foreground hover:text-foreground"}`}
-                  initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
-                  <span className="text-cyan-400 font-mono text-xs mr-1">0{index + 1}.</span>
-                  {item.label}
-                  {activeSection === item.href.slice(1) && (
-                    <motion.div layoutId="activeSection" className="absolute bottom-0 left-0 right-0 h-px bg-cyan-400"
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }} />
-                  )}
-                </motion.a>
-              ))}
-            </div>
-
-            {/* Resume Button */}
-            {resumeUrl ? (
-              <motion.a href={resumeUrl} target="_blank" rel="noopener noreferrer"
-                className="hidden md:flex items-center gap-2 px-4 py-2 border border-cyan-400 text-cyan-400 text-sm font-medium rounded-lg hover:bg-cyan-400/10 transition-colors"
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
-                whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Download className="w-3.5 h-3.5" /> Resume
-              </motion.a>
-            ) : (
-              <motion.span className="hidden md:flex items-center gap-2 px-4 py-2 border border-cyan-400/30 text-cyan-400/50 text-sm font-medium rounded-lg cursor-default"
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
-                <Download className="w-3.5 h-3.5" /> Resume
-              </motion.span>
-            )}
-
-            {/* Mobile Menu Button */}
-            <motion.button className="md:hidden p-2 text-foreground" onClick={() => setIsOpen(!isOpen)}
-              whileTap={{ scale: 0.9 }} aria-label={isOpen ? "Close menu" : "Open menu"}>
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </motion.button>
+          <div className="hidden items-center gap-2 rounded-full border border-line bg-bg/75 px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.18em] text-fg-3 backdrop-blur-xl lg:flex">
+            <span>{contact.location}</span>
+            <span className="text-fg-4">/</span>
+            <span className="tabular-nums text-fg-2">{time} IST</span>
           </div>
-        </div>
-      </motion.nav>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div initial={{ opacity: 0, x: "100%" }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }} className="fixed inset-0 z-40 md:hidden">
-            <div className="absolute inset-0 bg-background/95 backdrop-blur-lg" />
-            <nav className="relative h-full flex flex-col items-center justify-center gap-8">
-              {navItems.map((item, index) => (
-                <motion.a key={item.href} href={item.href} onClick={() => setIsOpen(false)}
-                  className="text-2xl font-medium text-foreground hover:text-cyan-400 transition-colors"
-                  initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
-                  <span className="text-cyan-400 font-mono text-sm mr-2">0{index + 1}.</span>
-                  {item.label}
-                </motion.a>
+          <div className="flex items-center gap-2">
+            <ul className="hidden items-center gap-1 rounded-full border border-line bg-bg/75 p-1 backdrop-blur-xl md:flex">
+              {LINKS.map((l) => (
+                <li key={l.href}>
+                  <a
+                    href={l.href}
+                    className="group block rounded-full px-4 py-2 text-[13px] font-medium text-fg-2 transition-colors hover:bg-fg/[0.06] hover:text-fg"
+                  >
+                    <span className="roll">
+                      <span data-text={l.label}>{l.label}</span>
+                    </span>
+                  </a>
+                </li>
               ))}
-              {resumeUrl && (
-                <motion.a href={resumeUrl} target="_blank" rel="noopener noreferrer"
-                  className="mt-4 px-6 py-3 border border-cyan-400 text-cyan-400 font-medium rounded-lg flex items-center gap-2"
-                  initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
-                  <Download className="w-4 h-4" /> Resume
-                </motion.a>
-              )}
-            </nav>
+            </ul>
+
+            <a
+              href={`mailto:${contact.email}`}
+              className="group hidden items-center gap-2 rounded-full bg-signal px-4 py-2.5 text-[13px] font-semibold text-bg transition-transform hover:scale-[1.03] lg:flex"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="ping-soft absolute inset-0 rounded-full bg-bg/60" />
+                <span className="relative h-2 w-2 rounded-full bg-bg" />
+              </span>
+              <span className="roll">
+                <span data-text="Hire me">Hire me</span>
+              </span>
+            </a>
+
+            <button
+              onClick={() => setOpen((o) => !o)}
+              aria-expanded={open}
+              aria-label={open ? "Close menu" : "Open menu"}
+              className="relative z-[75] flex h-11 w-11 items-center justify-center rounded-full border border-line bg-bg/60 backdrop-blur-xl md:hidden"
+            >
+              <span className="relative h-3 w-5">
+                <motion.span
+                  className="absolute left-0 top-0 h-[1.5px] w-5 bg-fg"
+                  animate={open ? { rotate: 45, y: 5.5 } : { rotate: 0, y: 0 }}
+                />
+                <motion.span
+                  className="absolute bottom-0 left-0 h-[1.5px] w-5 bg-fg"
+                  animate={open ? { rotate: -45, y: -5.5 } : { rotate: 0, y: 0 }}
+                />
+              </span>
+            </button>
+          </div>
+        </nav>
+      </motion.header>
+
+      {/* Fullscreen menu */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="fixed inset-0 z-[65] flex flex-col justify-between bg-bg-2 px-6 pb-10 pt-28"
+            initial={{ clipPath: "circle(0% at calc(100% - 44px) 46px)" }}
+            animate={{ clipPath: "circle(150% at calc(100% - 44px) 46px)" }}
+            exit={{ clipPath: "circle(0% at calc(100% - 44px) 46px)" }}
+            transition={{ duration: 0.8, ease: EASE }}
+          >
+            <div className="grid-bg pointer-events-none absolute inset-0 opacity-50" />
+            <ul className="relative space-y-1">
+              {LINKS.map((l, i) => (
+                <li key={l.href} className="overflow-hidden">
+                  <motion.a
+                    href={l.href}
+                    onClick={() => setOpen(false)}
+                    initial={{ y: "100%" }}
+                    animate={{ y: "0%" }}
+                    exit={{ y: "100%" }}
+                    transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.15 + i * 0.06 }}
+                    className="flex items-baseline gap-4 font-display text-6xl font-semibold tracking-tight text-fg"
+                  >
+                    <span className="font-mono text-xs text-signal">0{i + 1}</span>
+                    {l.label}
+                  </motion.a>
+                </li>
+              ))}
+            </ul>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0, transition: { delay: 0.5 } }}
+              exit={{ opacity: 0 }}
+              className="relative space-y-3 font-mono text-xs uppercase tracking-[0.18em] text-fg-3"
+            >
+              <a href={`mailto:${contact.email}`} className="flex items-center gap-1 normal-case tracking-normal text-fg">
+                {contact.email} <ArrowUpRight className="h-3.5 w-3.5" />
+              </a>
+              <p>
+                {contact.location} — {time} IST
+              </p>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

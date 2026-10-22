@@ -1,132 +1,210 @@
 "use client"
 
-import React from "react"
-import { motion, useInView } from "framer-motion"
-import { useRef, useState, useEffect } from "react"
-import { Mail, Phone, MapPin, Send, Github, Linkedin, ArrowUpRight } from "lucide-react"
+import { useRef, useState, type FormEvent } from "react"
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion"
+import { ArrowUpRight, Check, Copy, Github, Linkedin, MapPin, Phone } from "lucide-react"
 
-type ContactData = { email: string; phone: string; location: string; github: string; linkedin: string; tagline: string }
+import { usePortfolio } from "@/components/portfolio-provider"
+import { Magnetic } from "@/components/ui/magnetic"
+import { Reveal } from "@/components/ui/reveal"
+import { SplitWords } from "@/components/ui/split-text"
 
-const defaultContact: ContactData = {
-  email: "sumitmahato.aids25@aidtm.ac.in",
-  phone: "+91 875782221",
-  location: "Ahmedabad, India",
-  github: "https://github.com/sumitkumarmahato",
-  linkedin: "https://linkedin.com/in/sumitkumarmahato",
-  tagline: "Have a project in mind? I'd love to hear about it. Drop me a message and let's create something amazing.",
+function Field({
+  id,
+  label,
+  type = "text",
+  textarea,
+  value,
+  onChange,
+}: {
+  id: string
+  label: string
+  type?: string
+  textarea?: boolean
+  value: string
+  onChange: (v: string) => void
+}) {
+  const common =
+    "peer w-full resize-none border-0 border-b border-line-strong bg-transparent pb-3 pt-7 text-lg text-fg outline-none transition-colors placeholder:text-transparent focus:border-signal"
+  return (
+    <div className="relative">
+      {textarea ? (
+        <textarea id={id} rows={3} required placeholder={label} value={value} onChange={(e) => onChange(e.target.value)} className={common} />
+      ) : (
+        <input id={id} type={type} required placeholder={label} value={value} onChange={(e) => onChange(e.target.value)} className={common} />
+      )}
+      <label
+        htmlFor={id}
+        className="pointer-events-none absolute left-0 top-1 font-mono text-[11px] uppercase tracking-[0.18em] text-fg-3 transition-all peer-placeholder-shown:top-7 peer-placeholder-shown:font-sans peer-placeholder-shown:text-lg peer-placeholder-shown:normal-case peer-placeholder-shown:tracking-normal peer-focus:top-1 peer-focus:font-mono peer-focus:text-[11px] peer-focus:uppercase peer-focus:tracking-[0.18em] peer-focus:text-signal"
+      >
+        {label}
+      </label>
+    </div>
+  )
 }
 
 export default function Contact() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [contact, setContact] = useState<ContactData>(defaultContact)
+  const { contact } = usePortfolio()
+  const [copied, setCopied] = useState(false)
+  const [form, setForm] = useState({ name: "", email: "", message: "" })
+  const ref = useRef<HTMLElement>(null)
 
-  useEffect(() => {
-    fetch("/api/portfolio").then((r) => r.json()).then((d) => { if (d.contact) setContact(d.contact) }).catch(() => {})
-  }, [])
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "center center"] })
+  const circleScale = useTransform(scrollYProgress, [0, 1], [0.6, 1])
+  const circleRotate = useTransform(scrollYProgress, [0, 1], [-60, 0])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    setTimeout(() => setIsSubmitted(false), 3000)
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(contact.email)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1800)
+    } catch {}
   }
 
-  const contactInfo = [
-    { icon: Mail, label: "Email", value: contact.email, href: `mailto:${contact.email}` },
-    { icon: Phone, label: "Phone", value: contact.phone, href: `tel:${contact.phone.replace(/\s/g, "")}` },
-    { icon: MapPin, label: "Location", value: contact.location, href: null },
-  ]
+  const submit = (e: FormEvent) => {
+    e.preventDefault()
+    const body = `${form.message}\n\n— ${form.name} (${form.email})`
+    window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(
+      `Portfolio enquiry from ${form.name}`,
+    )}&body=${encodeURIComponent(body)}`
+  }
 
   const socials = [
-    { icon: Github, href: contact.github, label: "GitHub" },
-    { icon: Linkedin, href: contact.linkedin, label: "LinkedIn" },
-  ]
+    { icon: Github, label: "GitHub", href: contact.github },
+    { icon: Linkedin, label: "LinkedIn", href: contact.linkedin },
+  ].filter((s) => s.href && s.href !== "#")
 
   return (
-    <section id="contact" className="py-32 px-6 relative overflow-hidden" ref={ref}>
-      <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 0.03 } : {}}
-        className="absolute bottom-0 right-0 text-[20vw] font-black text-foreground pointer-events-none select-none hidden lg:block leading-none">04</motion.div>
+    <section ref={ref} id="contact" className="relative overflow-hidden px-5 pb-20 pt-28 sm:px-8 sm:pt-40">
+      <div className="pointer-events-none absolute left-1/2 top-0 h-[60vh] w-[80vw] -translate-x-1/2 rounded-full bg-signal/[0.06] blur-[120px]" />
 
-      <div className="max-w-7xl mx-auto relative">
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="mb-20 text-center">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <span className="text-cyan-400 font-mono text-sm">04</span>
-            <div className="h-px w-12 bg-cyan-400" />
-            <span className="text-xs tracking-[0.3em] text-muted-foreground uppercase">Get In Touch</span>
-            <div className="h-px w-12 bg-cyan-400" />
-          </div>
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6">{"Let's"} Work Together</h2>
-          <p className="text-muted-foreground max-w-xl mx-auto text-lg">{contact.tagline}</p>
-        </motion.div>
+      <div className="relative mx-auto max-w-[1600px] space-y-20">
+        <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-fg-3">
+          <span className="text-signal">(06)</span> Contact
+        </div>
 
-        <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
-          <motion.div initial={{ opacity: 0, x: -50 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="lg:col-span-2 space-y-8">
-            <div className="space-y-6">
-              {contactInfo.map((item, index) => (
-                <motion.div key={item.label} initial={{ opacity: 0, x: -30 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.3 + index * 0.1 }} className="group">
-                  <div className="flex items-center gap-4 p-4 rounded-xl bg-card/30 border border-border/50 hover:border-cyan-400/30 transition-colors">
-                    <div className="p-3 rounded-lg bg-cyan-400/10 text-cyan-400"><item.icon className="w-5 h-5" /></div>
-                    <div>
-                      <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{item.label}</p>
-                      {item.href ? (
-                        <a href={item.href} className="text-foreground hover:text-cyan-400 transition-colors font-medium">{item.value}</a>
-                      ) : (
-                        <p className="text-foreground font-medium">{item.value}</p>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+        {/* Headline + magnetic CTA */}
+        <div className="relative">
+          <h2 className="font-display text-[clamp(3.2rem,11vw,12rem)] font-semibold leading-[0.88] tracking-[-0.055em] text-fg">
+            <SplitWords text="Let's build" />
+            <br />
+            <SplitWords text="something" delay={0.1} />{" "}
+            <SplitWords text="great." delay={0.2} className="font-serif font-normal italic text-signal" />
+          </h2>
+
+          <motion.div
+            style={{ scale: circleScale, rotate: circleRotate }}
+            className="mt-12 lg:absolute lg:bottom-4 lg:right-0 lg:mt-0"
+          >
+            <Magnetic strength={0.4}>
+              <a
+                href={`mailto:${contact.email}`}
+                className="group relative flex h-40 w-40 items-center justify-center overflow-hidden rounded-full bg-signal text-bg sm:h-52 sm:w-52"
+              >
+                <span className="absolute inset-0 translate-y-full rounded-full bg-fg transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0" />
+                <span className="relative flex flex-col items-center gap-1 font-display text-lg font-semibold">
+                  <ArrowUpRight className="h-7 w-7 transition-transform duration-500 group-hover:rotate-45" />
+                  Get in touch
+                </span>
+              </a>
+            </Magnetic>
+          </motion.div>
+        </div>
+
+        <div className="grid gap-16 border-t border-line pt-14 lg:grid-cols-12">
+          {/* Direct lines */}
+          <Reveal className="space-y-10 lg:col-span-5">
+            <p className="max-w-md text-lg leading-relaxed text-fg-3">{contact.tagline}</p>
+
+            <div className="space-y-3">
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-fg-4">Email</p>
+              <div className="flex flex-wrap items-center gap-3">
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="break-all font-display text-xl font-medium text-fg transition-colors hover:text-signal sm:text-2xl"
+                >
+                  {contact.email}
+                </a>
+                <button
+                  onClick={copy}
+                  aria-label="Copy email address"
+                  className="relative flex h-9 items-center gap-2 overflow-hidden rounded-full border border-line px-3 font-mono text-[11px] text-fg-2 transition-colors hover:border-fg/40"
+                >
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.span
+                      key={copied ? "ok" : "copy"}
+                      initial={{ y: 12, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -12, opacity: 0 }}
+                      className="flex items-center gap-1.5"
+                    >
+                      {copied ? <Check className="h-3.5 w-3.5 text-signal" /> : <Copy className="h-3.5 w-3.5" />}
+                      {copied ? "Copied" : "Copy"}
+                    </motion.span>
+                  </AnimatePresence>
+                </button>
+              </div>
             </div>
 
-            <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.6 }}>
-              <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider mb-4">Follow Me</p>
-              <div className="flex gap-3">
-                {socials.map((social) => (
-                  <motion.a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer"
-                    className="group p-4 rounded-xl bg-card/30 border border-border/50 hover:border-cyan-400/30 text-muted-foreground hover:text-cyan-400 transition-all"
-                    whileHover={{ scale: 1.05, y: -4 }} whileTap={{ scale: 0.95 }} aria-label={social.label}>
-                    <social.icon className="w-5 h-5" />
-                  </motion.a>
+            <div className="grid gap-6 sm:grid-cols-2">
+              <div className="space-y-2">
+                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-fg-4">Phone</p>
+                <a href={`tel:${contact.phone.replace(/\s/g, "")}`} className="flex items-center gap-2 text-fg-2 hover:text-fg">
+                  <Phone className="h-4 w-4 text-signal" /> {contact.phone}
+                </a>
+              </div>
+              <div className="space-y-2">
+                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-fg-4">Based in</p>
+                <p className="flex items-center gap-2 text-fg-2">
+                  <MapPin className="h-4 w-4 text-signal" /> {contact.location}
+                </p>
+              </div>
+            </div>
+
+            {socials.length > 0 && (
+              <div className="flex flex-wrap gap-3">
+                {socials.map((s) => (
+                  <Magnetic key={s.label} strength={0.25}>
+                    <a
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-2.5 rounded-full border border-line px-5 py-3 text-sm font-medium text-fg-2 transition-colors hover:border-signal hover:text-fg"
+                    >
+                      <s.icon className="h-4 w-4" />
+                      <span className="roll">
+                        <span data-text={s.label}>{s.label}</span>
+                      </span>
+                      <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:rotate-45" />
+                    </a>
+                  </Magnetic>
                 ))}
               </div>
-            </motion.div>
-          </motion.div>
+            )}
+          </Reveal>
 
-          <motion.div initial={{ opacity: 0, x: 50 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6, delay: 0.3 }} className="lg:col-span-3">
-            <form onSubmit={handleSubmit} className="p-6 md:p-8 rounded-2xl bg-card/30 border border-border/50 backdrop-blur-sm space-y-6">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-xs font-mono text-muted-foreground uppercase tracking-wider">Name</label>
-                  <input type="text" id="name" required placeholder="John Doe" className="w-full px-4 py-3 bg-background/50 border border-border/50 rounded-lg focus:outline-none focus:border-cyan-400 transition-colors text-foreground placeholder:text-muted-foreground/50" />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-xs font-mono text-muted-foreground uppercase tracking-wider">Email</label>
-                  <input type="email" id="email" required placeholder="john@example.com" className="w-full px-4 py-3 bg-background/50 border border-border/50 rounded-lg focus:outline-none focus:border-cyan-400 transition-colors text-foreground placeholder:text-muted-foreground/50" />
-                </div>
+          {/* Form */}
+          <Reveal delay={0.12} className="lg:col-span-6 lg:col-start-7">
+            <form onSubmit={submit} className="space-y-8">
+              <div className="grid gap-8 sm:grid-cols-2">
+                <Field id="name" label="Your name" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
+                <Field id="email" type="email" label="Email address" value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
               </div>
-              <div className="space-y-2">
-                <label htmlFor="subject" className="text-xs font-mono text-muted-foreground uppercase tracking-wider">Subject</label>
-                <input type="text" id="subject" required placeholder="Project Inquiry" className="w-full px-4 py-3 bg-background/50 border border-border/50 rounded-lg focus:outline-none focus:border-cyan-400 transition-colors text-foreground placeholder:text-muted-foreground/50" />
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="message" className="text-xs font-mono text-muted-foreground uppercase tracking-wider">Message</label>
-                <textarea id="message" rows={5} required placeholder="Tell me about your project..." className="w-full px-4 py-3 bg-background/50 border border-border/50 rounded-lg focus:outline-none focus:border-cyan-400 transition-colors resize-none text-foreground placeholder:text-muted-foreground/50" />
-              </div>
-              <motion.button type="submit" disabled={isSubmitting || isSubmitted}
-                className="w-full py-4 px-6 bg-gradient-to-r from-cyan-400 to-blue-500 text-background font-semibold rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-70"
-                whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                {isSubmitting ? (<><div className="w-5 h-5 border-2 border-background border-t-transparent rounded-full animate-spin" />Sending...</>) :
-                  isSubmitted ? (<><span>Message Sent!</span><ArrowUpRight className="w-5 h-5" /></>) :
-                    (<><Send className="w-5 h-5" />Send Message</>)}
-              </motion.button>
+              <Field id="message" textarea label="Tell me about your project" value={form.message} onChange={(v) => setForm({ ...form, message: v })} />
+              <button
+                type="submit"
+                className="group flex w-full items-center justify-between rounded-full bg-fg py-2 pl-7 pr-2 text-base font-semibold text-bg transition-colors hover:bg-signal sm:w-auto sm:gap-10"
+              >
+                <span className="roll">
+                  <span data-text="Send message">Send message</span>
+                </span>
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-bg text-fg transition-transform duration-500 group-hover:rotate-45">
+                  <ArrowUpRight className="h-5 w-5" />
+                </span>
+              </button>
+              <p className="font-mono text-[11px] text-fg-4">Opens your email client with the message pre-filled.</p>
             </form>
-          </motion.div>
+          </Reveal>
         </div>
       </div>
     </section>

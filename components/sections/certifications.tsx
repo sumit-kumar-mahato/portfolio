@@ -1,62 +1,69 @@
 "use client"
 
-import { motion, useInView } from "framer-motion"
-import { useRef, useEffect, useState } from "react"
-import { Award, ExternalLink } from "lucide-react"
+import { motion } from "framer-motion"
+import { ArrowUpRight } from "lucide-react"
 
-type Cert = { id: number; title: string; issuer: string; icon: string; color: string; link: string }
+import { usePortfolio } from "@/components/portfolio-provider"
+import { SectionHeader } from "@/components/ui/section-header"
 
-const defaultCerts: Cert[] = []
+const EASE = [0.16, 1, 0.3, 1] as const
 
 export default function Certifications() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
-  const [certifications, setCertifications] = useState<Cert[]>(defaultCerts)
-
-  useEffect(() => {
-    fetch("/api/portfolio").then((r) => r.json()).then((d) => { if (d.certifications) setCertifications(d.certifications) }).catch(() => {})
-  }, [])
+  const { certifications } = usePortfolio()
+  if (!certifications.length) return null
 
   return (
-    <section className="py-24 px-6 relative overflow-hidden" ref={ref}>
-      <div className="max-w-7xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="mb-16 text-center">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <div className="h-px w-12 bg-cyan-400" />
-            <span className="text-xs tracking-[0.3em] text-muted-foreground uppercase">Credentials</span>
-            <div className="h-px w-12 bg-cyan-400" />
-          </div>
-          <h2 className="text-3xl md:text-5xl font-bold text-foreground">Certifications</h2>
-        </motion.div>
+    <section id="certifications" className="relative px-5 py-28 sm:px-8 sm:py-32">
+      <div className="mx-auto max-w-[1600px] space-y-14 sm:space-y-20">
+        <SectionHeader
+          index="05"
+          label="Credentials"
+          title="Certified"
+          accent="& verified."
+          aside="Formal coursework that backs up the hands-on work."
+        />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {certifications.map((cert, index) => (
-            <motion.div key={cert.id} initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative p-6 rounded-2xl bg-card/30 border border-border/50 backdrop-blur-sm hover:border-cyan-400/30 transition-all cursor-default"
-              whileHover={{ y: -5 }}>
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${cert.color} flex items-center justify-center mb-4`}>
-                <span className="text-white font-bold text-sm">{cert.icon}</span>
-              </div>
-              <h3 className="text-foreground font-semibold mb-1 group-hover:text-cyan-400 transition-colors">{cert.title}</h3>
-              <p className="text-sm text-muted-foreground flex items-center gap-1">
-                <Award className="w-3 h-3" />
-                {cert.issuer}
-              </p>
-              {cert.link && cert.link !== "#" && (
-                <a href={cert.link} target="_blank" rel="noopener noreferrer"
-                  className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ExternalLink className="w-4 h-4 text-cyan-400" />
-                </a>
-              )}
-              {(!cert.link || cert.link === "#") && (
-                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ExternalLink className="w-4 h-4 text-cyan-400" />
-                </div>
-              )}
-            </motion.div>
-          ))}
-        </div>
+        <ul className="border-b border-line">
+          {certifications.map((c, i) => {
+            const link = c.link && c.link !== "#" ? c.link : null
+            const Tag = link ? "a" : "div"
+            return (
+              <motion.li
+                key={c.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.8, ease: EASE, delay: i * 0.06 }}
+              >
+                <Tag
+                  {...(link ? { href: link, target: "_blank", rel: "noopener noreferrer", "data-cursor": "Verify" } : {})}
+                  className="group relative isolate grid grid-cols-12 items-center gap-4 overflow-hidden border-t border-line py-7 sm:py-8"
+                >
+                  <span className="absolute inset-0 -z-10 origin-left scale-x-0 bg-card transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100" />
+                  <span className="col-span-2 pl-0 font-mono text-xs text-fg-4 transition-all duration-500 group-hover:pl-4 sm:col-span-1">
+                    0{i + 1}
+                  </span>
+                  <span className="col-span-10 flex items-center gap-4 sm:col-span-7">
+                    <span
+                      className={`hidden h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${c.color} font-mono text-[11px] font-bold text-white transition-transform duration-500 group-hover:rotate-12 sm:flex`}
+                    >
+                      {c.icon}
+                    </span>
+                    <span className="font-display text-2xl font-semibold tracking-[-0.03em] text-fg sm:text-4xl">
+                      {c.title}
+                    </span>
+                  </span>
+                  <span className="col-span-10 col-start-3 font-mono text-xs uppercase tracking-[0.16em] text-fg-3 sm:col-span-3 sm:col-start-auto">
+                    {c.issuer}
+                  </span>
+                  <span className="col-span-12 hidden justify-end pr-4 sm:col-span-1 sm:flex">
+                    <ArrowUpRight className="h-6 w-6 -translate-x-2 text-fg-4 opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:text-signal group-hover:opacity-100" />
+                  </span>
+                </Tag>
+              </motion.li>
+            )
+          })}
+        </ul>
       </div>
     </section>
   )
